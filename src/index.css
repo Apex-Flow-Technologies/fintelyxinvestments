@@ -449,3 +449,7 @@ input[type=range]::-moz-range-thumb:hover {
   }
 }
 
+.text-center {
+  text-align: center;
+}
+

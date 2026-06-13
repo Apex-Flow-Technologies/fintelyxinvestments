@@ -215,8 +215,8 @@ export default function LandingPage({ onNavToCalculators, theme }) {
               <div className="hero-dashboard-preview-card">
                 
                 {/* Header Row with Autopilot indicator */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <div className="preview-card-header">
+                  <div className="preview-card-header-left">
                     <span className="forecast-pill">Interactive Forecast</span>
                     {isAutopilotActive && (
                       <span className="flex-center" style={{
@@ -231,7 +231,8 @@ export default function LandingPage({ onNavToCalculators, theme }) {
                         textTransform: "uppercase",
                         display: "inline-flex",
                         alignItems: "center",
-                        gap: "4px"
+                        gap: "4px",
+                        whiteSpace: "nowrap"
                       }}>
                         <span className="autopilot-pulse-dot"></span>
                         Simulating
@@ -465,7 +466,7 @@ export default function LandingPage({ onNavToCalculators, theme }) {
             <p>Curated access and advisory mapping aligned to your individual profile.</p>
           </div>
 
-          <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginTop: "40px" }}>
+          <div className="solutions-grid">
             {/* Solution 1 */}
             <div className="glass-card feature-card">
               <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
@@ -526,33 +527,41 @@ export default function LandingPage({ onNavToCalculators, theme }) {
             <p>A structured, client-first collaborative model designed for clarity and execution.</p>
           </div>
 
-          <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginTop: "40px" }}>
+          <div className="workflow-grid">
             {/* Step 1 */}
-            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
-              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>01</div>
-              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Discovery</h3>
-              <p style={{ textAlign: "center" }}>Understanding your priorities, values, and capital constraints.</p>
+            <div className="workflow-card">
+              <div className="workflow-number">01</div>
+              <div className="workflow-content">
+                <h3>Discovery</h3>
+                <p>Understanding your priorities, values, and capital constraints.</p>
+              </div>
             </div>
 
             {/* Step 2 */}
-            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
-              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>02</div>
-              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Evaluation</h3>
-              <p style={{ textAlign: "center" }}>Suitability mapping, asset screening, and provider suitability evaluation.</p>
+            <div className="workflow-card">
+              <div className="workflow-number">02</div>
+              <div className="workflow-content">
+                <h3>Evaluation</h3>
+                <p>Suitability mapping, asset screening, and provider suitability evaluation.</p>
+              </div>
             </div>
 
             {/* Step 3 */}
-            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
-              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>03</div>
-              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Facilitation</h3>
-              <p style={{ textAlign: "center" }}>Onboarding, documentation, and coordination.</p>
+            <div className="workflow-card">
+              <div className="workflow-number">03</div>
+              <div className="workflow-content">
+                <h3>Facilitation</h3>
+                <p>Onboarding, documentation, and coordination.</p>
+              </div>
             </div>
 
             {/* Step 4 */}
-            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
-              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>04</div>
-              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Ongoing Support</h3>
-              <p style={{ textAlign: "center" }}>Reviews, adjustments, and continuous guidance.</p>
+            <div className="workflow-card">
+              <div className="workflow-number">04</div>
+              <div className="workflow-content">
+                <h3>Ongoing Support</h3>
+                <p>Reviews, adjustments, and continuous guidance.</p>
+              </div>
             </div>
           </div>
         </div>
