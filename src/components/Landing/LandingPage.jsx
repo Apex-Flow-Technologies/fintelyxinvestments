@@ -289,28 +289,55 @@ export default function LandingPage({ onNavToCalculators, theme }) {
                       />
                     )}
                     
-                    {/* Glowing exponential growth line */}
+                    {/* High-resolution vector glow lines (multiple paths with decreasing opacity) */}
                     {svgPathData && (
                       <path
                         d={svgPathData}
                         fill="none"
                         stroke="var(--accent-green)"
-                        strokeWidth="2.5"
+                        strokeWidth="8"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        style={{ filter: "drop-shadow(0 2px 8px var(--accent-green-glow))" }}
+                        opacity="0.12"
+                      />
+                    )}
+                    {svgPathData && (
+                      <path
+                        d={svgPathData}
+                        fill="none"
+                        stroke="var(--accent-green)"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        opacity="0.3"
+                      />
+                    )}
+                    {svgPathData && (
+                      <path
+                        d={svgPathData}
+                        fill="none"
+                        stroke="var(--accent-green)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     )}
                     
-                    {/* End terminal node indicator */}
+                    {/* End terminal node indicator vector glow layers */}
                     <circle
                       cx="360"
                       cy={svgEndCoordinate}
-                      r="5"
+                      r="8"
+                      fill="var(--accent-green)"
+                      opacity="0.3"
+                    />
+                    <circle
+                      cx="360"
+                      cy={svgEndCoordinate}
+                      r="4.5"
                       fill="#ffffff"
                       stroke="var(--accent-green)"
                       strokeWidth="2"
-                      style={{ filter: "drop-shadow(0 0 6px var(--accent-green-glow))" }}
                     />
                   </svg>
                   
