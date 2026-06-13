@@ -10,7 +10,7 @@ const partners = [
     role: "PRINCIPAL PARTNER",
     department: "INVESTMENT SERVICES",
     desc: "A financial educator at heart, Sadhiq applies deep market understanding and practical investing insight to guide clients in allocating capital wisely, managing risk, and building long-term wealth. His advisory philosophy is rooted in awareness, discipline, and informed decision-making.",
-    img: "/assets/sadhiq.png",
+    img: "",
     experience: "8+ Years in Financial Advisory & Compounding Literacy Desk",
     philosophy: "Advising is not just about choosing schemes, but educating investors to ride out market cycles with peace of mind. Compound interest works best when matched with investor discipline.",
     credentials: [
@@ -33,7 +33,7 @@ const partners = [
     role: "PARTNER",
     department: "OPERATIONS & CLIENT SERVICING",
     desc: "From Institutional trade operations background Antony brings operational governance, risk awareness, and control discipline into the advisory and wealth management space.",
-    img: "/assets/antony.png",
+    img: "",
     experience: "Ex-Institutional Trade Operations Lead & Risk Analyst",
     philosophy: "Operational robustness and risk governance are the silent pillars of successful wealth creation. Every transaction deserves institutional-grade oversight and compliance.",
     credentials: [
@@ -56,7 +56,7 @@ const partners = [
     role: "PARTNER",
     department: "PORTFOLIO SYSTEMATICS",
     desc: "Sundhar coordinates mutual fund systematic allocations, maps long-term compounding projection strategies, and manages capital market research activities to ensure seamless client portal integrations.",
-    img: "/assets/sundhar.png",
+    img: "",
     experience: "Quantitative Capital Markets Researcher & Systems Engineer",
     philosophy: "Using data-driven systematics and high-fidelity projection tools allows investors to visualize their financial futures with absolute mathematical clarity.",
     credentials: [
@@ -99,13 +99,15 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
               <div className="partner-detail-fallback flex-center">
                 {selectedPartner.initial}
               </div>
-              <img 
-                src={selectedPartner.img} 
-                alt={selectedPartner.name} 
-                onError={(e) => {
-                  e.target.style.display = "none";
-                }}
-              />
+              {selectedPartner.img && (
+                <img 
+                  src={selectedPartner.img} 
+                  alt={selectedPartner.name} 
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              )}
             </div>
 
             {/* Right Column: Bio Content */}
@@ -295,14 +297,16 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
                 <div className="portrait-image-fallback flex-center">
                   {partner.initial}
                 </div>
-                <img 
-                  src={partner.img} 
-                  alt={partner.name} 
-                  onError={(e) => {
-                    // Hide broken image link to reveal high-fidelity fallback behind it
-                    e.target.style.display = "none";
-                  }}
-                />
+                {partner.img && (
+                  <img 
+                    src={partner.img} 
+                    alt={partner.name} 
+                    onError={(e) => {
+                      // Hide broken image link to reveal high-fidelity fallback behind it
+                      e.target.style.display = "none";
+                    }}
+                  />
+                )}
               </div>
 
               {/* Text metadata */}
