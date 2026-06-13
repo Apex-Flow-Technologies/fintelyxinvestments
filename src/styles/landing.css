@@ -60,7 +60,7 @@
 }
 
 .hero-title {
-  font-size: 64px;
+  font-size: clamp(32px, 5vw, 64px);
   line-height: 1.1;
   font-weight: 800;
   color: var(--text-primary);
@@ -75,19 +75,51 @@
 
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 42px;
+    font-size: clamp(28px, 6vw, 42px);
   }
 }
 
 .hero-subtitle {
-  font-size: 18px;
+  font-size: clamp(14px, 1.6vw, 16px);
   color: var(--text-secondary);
-  margin-bottom: 40px;
-  line-height: 1.6;
+  line-height: 1.7;
+  margin-bottom: clamp(20px, 3vw, 32px);
+  max-width: 550px;
+}
+
+@media (max-width: 1024px) {
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.hero-trust-badge {
+  width: fit-content;
+  margin: 0 auto 20px 0;
+  padding: 6px 16px;
+  border-radius: 30px;
+  gap: 10px;
+  transition: var(--transition-smooth);
+}
+
+@media (max-width: 1024px) {
+  .hero-trust-badge {
+    margin: 0 auto 20px auto;
+  }
 }
 
 .hero-actions {
+  display: flex;
+  align-items: center;
   gap: 16px;
+  justify-content: flex-start;
+}
+
+@media (max-width: 1024px) {
+  .hero-actions {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 576px) {
@@ -159,10 +191,46 @@
 
 .features-grid-section {
   padding: 80px 0;
+  border-top: 1px solid var(--border-light);
+}
+
+@media (max-width: 768px) {
+  .features-grid-section {
+    padding: 40px 0;
+  }
+}
+
+.cta-banner-section {
+  border-top: 1px solid var(--border-light);
+  padding: 80px 24px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%);
+  border-radius: 24px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .cta-banner-section {
+    padding: 40px 16px;
+    margin-top: 24px;
+  }
 }
 
 .section-title-wrapper {
   margin-bottom: 48px;
+}
+
+@media (max-width: 768px) {
+  .section-title-wrapper {
+    margin-bottom: 24px;
+  }
+  .section-title-wrapper h2 {
+    font-size: 26px;
+  }
+  .section-title-wrapper p {
+    font-size: 13px;
+    margin-top: 8px;
+  }
 }
 
 .section-title-wrapper h2 {
@@ -335,6 +403,14 @@
 .landing-regulatory-badge-section {
   padding: 60px 0;
   border-top: 1px solid var(--border-light);
+  margin-top: 60px;
+}
+
+@media (max-width: 768px) {
+  .landing-regulatory-badge-section {
+    padding: 30px 0;
+    margin-top: 30px;
+  }
 }
 
 .regulatory-glass-badge {

@@ -177,15 +177,9 @@ export default function LandingPage({ onNavToCalculators, theme }) {
             {/* Left Column: Legacy Typography & Reviews */}
             <div style={{ textAlign: "left" }}>
               {/* Trust Badge */}
-              <div className="glass-card flex-center" style={{ 
-                width: "fit-content", 
-                margin: "0 auto 20px 0", 
-                padding: "6px 16px", 
-                borderRadius: "30px", 
-                gap: "10px",
+              <div className="hero-trust-badge glass-card flex-center" style={{ 
                 background: theme === "light" ? "rgba(15, 23, 42, 0.04)" : "rgba(255, 255, 255, 0.02)",
-                border: theme === "light" ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(255, 255, 255, 0.05)",
-                transition: "var(--transition-smooth)"
+                border: theme === "light" ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(255, 255, 255, 0.05)"
               }}>
                 <div className="flex-center" style={{ gap: "2px" }}>
                   {[...Array(5)].map((_, i) => (
@@ -197,27 +191,16 @@ export default function LandingPage({ onNavToCalculators, theme }) {
                 </span>
               </div>
 
-              <h1 className="hero-title" style={{ 
-                fontSize: "clamp(30px, 4.2vw, 48px)", 
-                lineHeight: "1.1", 
-                fontWeight: "800",
-                marginBottom: "clamp(12px, 2vw, 24px)" 
-              }}>
+              <h1 className="hero-title">
                 Building Clarity.<br />
                 Creating Confidence.<br />
                 <span className="highlight-text-gradient">Guiding Enduring Wealth.</span>
               </h1>
-              <p className="hero-subtitle" style={{ 
-                fontSize: "clamp(13px, 1.6vw, 15px)", 
-                color: "var(--text-secondary)", 
-                lineHeight: "1.7", 
-                marginBottom: "clamp(20px, 3vw, 32px)",
-                maxWidth: "550px"
-              }}>
+              <p className="hero-subtitle">
                 Fintelyx Investments partners with clients to bridge knowledge, discipline, and strategy. Our awareness-led approach enables thoughtful investing, intelligent protection, and long-term financial progress.
               </p>
               
-              <div className="hero-actions flex-center" style={{ justifyContent: "flex-start", gap: "16px" }}>
+              <div className="hero-actions">
                 <button className="btn-primary" onClick={() => {
                   const el = document.getElementById("about-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -438,7 +421,7 @@ export default function LandingPage({ onNavToCalculators, theme }) {
       </section>
 
       {/* 3. ABOUT US & PHILOSOPHY PILLARS */}
-      <section id="about-section" className="features-grid-section" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "80px" }}>
+      <section id="about-section" className="features-grid-section">
         <div className="content-container">
           <div className="section-title-wrapper text-center">
             <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>ABOUT US</span>
@@ -474,7 +457,7 @@ export default function LandingPage({ onNavToCalculators, theme }) {
       </section>
 
       {/* 4. SMART INVESTMENTS SOLUTIONS GRID */}
-      <section className="features-grid-section" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "80px" }}>
+      <section className="features-grid-section">
         <div className="content-container">
           <div className="section-title-wrapper text-center">
             <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>OUR SOLUTIONS</span>
@@ -535,7 +518,7 @@ export default function LandingPage({ onNavToCalculators, theme }) {
       </section>
 
       {/* 5. PROCESS - HOW WE WORK */}
-      <section className="features-grid-section" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "80px" }}>
+      <section className="features-grid-section">
         <div className="content-container">
           <div className="section-title-wrapper text-center">
             <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>OUR WORKFLOW</span>
@@ -576,14 +559,7 @@ export default function LandingPage({ onNavToCalculators, theme }) {
       </section>
 
       {/* 6. CTA BANNER SECTION */}
-      <section className="features-grid-section" style={{ 
-        borderTop: "1px solid var(--border-light)", 
-        padding: "80px 24px",
-        background: "linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%)",
-        borderRadius: "24px",
-        marginTop: "40px",
-        textAlign: "center"
-      }}>
+      <section className="cta-banner-section">
         <div className="content-container">
           <div className="section-title-wrapper text-center" style={{ marginBottom: "32px" }}>
             <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>GET IN TOUCH</span>
@@ -603,7 +579,7 @@ export default function LandingPage({ onNavToCalculators, theme }) {
       </section>
 
       {/* 7. AMFI REGISTRATION LICENSE & CREDENTIALS SECTION */}
-      <section className="landing-regulatory-badge-section flex-center" style={{ borderTop: "1px solid var(--border-light)", marginTop: "60px" }}>
+      <section className="landing-regulatory-badge-section flex-center">
         <div className="content-container flex-center">
           <div className="regulatory-glass-badge flex-center">
             <div className="badge-stamp-icon flex-center">
