@@ -214,7 +214,7 @@ export default function AboutPage() {
         
         {/* 2. Main Corporate Profile Glass Card */}
         <div className="glass-card" style={{ padding: "40px", textAlign: "left" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", alignItems: "center" }}>
+          <div className="about-corporate-grid">
             
             {/* Left Col: Mission Statement */}
             <div>
@@ -272,7 +272,7 @@ export default function AboutPage() {
 
         <div className="team-cards-grid flex-center" style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", 
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
           gap: "24px",
           width: "100%",
           alignItems: "stretch"
@@ -337,9 +337,10 @@ export default function AboutPage() {
         <div className="glass-card flex-center" style={{ 
           background: "rgba(245, 158, 11, 0.03)", 
           border: "1px dashed rgba(245, 158, 11, 0.3)", 
-          padding: "40px",
+          padding: "clamp(20px, 4vw, 40px)",
           gap: "24px",
-          marginTop: "20px"
+          marginTop: "20px",
+          flexWrap: "wrap"
         }}>
           <div className="badge-stamp-icon flex-center" style={{ 
             background: "rgba(245, 158, 11, 0.08)", 

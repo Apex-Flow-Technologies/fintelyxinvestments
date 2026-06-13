@@ -46,7 +46,7 @@ export default function ContactPage() {
         <p>Inquire about mutual fund distributions, request PMS consultations, or submit feedback on our wealth platform.</p>
       </div>
 
-      <div className="calc-layout-grid" style={{ gridTemplateColumns: "1fr 440px", marginTop: "32px" }}>
+      <div className="contact-layout-grid">
         
         {/* Left Column: Interactive Inquiry Form */}
         <div className="glass-card">

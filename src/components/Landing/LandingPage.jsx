@@ -482,7 +482,7 @@ export default function LandingPage({ onNavToCalculators, theme }) {
             <p>Curated access and advisory mapping aligned to your individual profile.</p>
           </div>
 
-          <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px", marginTop: "40px" }}>
+          <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginTop: "40px" }}>
             {/* Solution 1 */}
             <div className="glass-card feature-card">
               <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>

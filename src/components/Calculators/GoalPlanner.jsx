@@ -195,7 +195,7 @@ export default function GoalPlanner() {
         <div className="calc-analytics-column">
           
           {/* Big Output Target Card */}
-          <div className="glass-card analytics-card flex-center" style={{ flexDirection: "column", padding: "40px", textAlignment: "center" }}>
+          <div className="glass-card analytics-card flex-center" style={{ flexDirection: "column", padding: "40px", textAlign: "center" }}>
             <div className="flex-center" style={{ background: "rgba(16, 185, 129, 0.1)", width: "64px", height: "64px", borderRadius: "50%", marginBottom: "16px" }}>
               <Target size={32} style={{ color: "#10b981" }} />
             </div>

@@ -63,7 +63,7 @@ export default function ServicesPage({ onNavToCalculators }) {
       <div style={{ display: "flex", flexDirection: "column", gap: "48px", marginTop: "32px" }}>
         
         {/* 2. Services Grid */}
-        <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+        <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
           {services.map((service, idx) => (
             <div key={idx} className="glass-card feature-card" style={{ padding: "32px", display: "flex", flexDirection: "column", justifyContent: "space-between", textAlign: "left" }}>
               <div>

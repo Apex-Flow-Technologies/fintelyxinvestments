@@ -333,7 +333,7 @@ export default function PortfolioBacktester({ theme }) {
         <div className="calc-analytics-column">
           
           {/* Estimated Portfolio Backtest value card */}
-          <div className="glass-card analytics-card flex-center" style={{ flexDirection: "column", padding: "32px", textAlignment: "center" }}>
+          <div className="glass-card analytics-card flex-center" style={{ flexDirection: "column", padding: "32px", textAlign: "center" }}>
             <span style={{ fontSize: "11px", color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Simulator Outcome</span>
             <h1 style={{ fontSize: "40px", color: "var(--accent-cyan)", textShadow: "0 0 20px rgba(6, 182, 212, 0.15)", margin: "4px 0" }}>
               {fmt(results.finalValue)}

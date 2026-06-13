@@ -39,7 +39,7 @@ export default function BlogsPage() {
         <p>Expert articles, investment guides, and strategic briefings compiled by our research desk to advance your financial awareness.</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1.8fr", gap: "32px", marginTop: "32px", alignItems: "start" }}>
+      <div className="blogs-layout-grid">
         
         {/* Left Side: Article List */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
