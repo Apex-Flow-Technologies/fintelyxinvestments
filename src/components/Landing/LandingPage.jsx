@@ -1,0 +1,628 @@
+import React, { useState, useEffect, useRef } from "react";
+import { Sparkles, ArrowRight, ShieldCheck, TrendingUp, Cpu, Landmark } from "lucide-react";
+import ParticleBackground from "../Common/ParticleBackground";
+import "../../styles/landing.css";
+
+export default function LandingPage({ onNavToCalculators, theme }) {
+
+  // State variables for interactive mockup
+  const [sipSlider, setSipSlider] = useState(35000);
+  const [cagrSlider, setCagrSlider] = useState(14.2);
+  const [projectedCorpus, setProjectedCorpus] = useState(0);
+  const [svgPathData, setSvgPathData] = useState("");
+  const [svgEndCoordinate, setSvgEndCoordinate] = useState(60);
+
+  // Autopilot Simulation States
+  const [isAutopilotActive, setIsAutopilotActive] = useState(true);
+  const [sipTarget, setSipTarget] = useState(35000);
+  const [cagrTarget, setCagrTarget] = useState(14.2);
+  
+  // Ref to hold the idle interaction timer
+  const autopilotTimerRef = useRef(null);
+
+  // Refs to optimize LERP updates and prevent infinite looping depth errors
+  const currentSipRef = useRef(sipSlider);
+  const currentCagrRef = useRef(cagrSlider);
+
+  // Sync refs with latest state updates
+  useEffect(() => {
+    currentSipRef.current = sipSlider;
+  }, [sipSlider]);
+
+  useEffect(() => {
+    currentCagrRef.current = cagrSlider;
+  }, [cagrSlider]);
+
+  // Calculate live projections based on actual current values
+  useEffect(() => {
+    const totalYears = 15;
+    const r = cagrSlider / 100;
+    const monthlyRate = r / 12;
+    const totalMonths = totalYears * 12;
+
+    // Calculate final corpus
+    const finalVal = sipSlider * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+    setProjectedCorpus(finalVal);
+
+    // Calculate path coordinates
+    const width = 360;
+    const height = 100; // Draw within 10px to 110px vertical range
+    const points = [];
+    
+    for (let yr = 0; yr <= totalYears; yr++) {
+      const m = yr * 12;
+      const val = m === 0 ? 0 : sipSlider * ((Math.pow(1 + monthlyRate, m) - 1) / monthlyRate) * (1 + monthlyRate);
+      
+      const x = (yr / totalYears) * width;
+      const y = finalVal === 0 ? height : height - (val / finalVal) * (height - 20) + 10;
+      points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      
+      if (yr === totalYears) {
+        setSvgEndCoordinate(y);
+      }
+    }
+    
+    setSvgPathData(`M ${points.join(" L ")}`);
+  }, [sipSlider, cagrSlider]);
+
+  // Autopilot: Cycle random targets every 4.5 seconds
+  useEffect(() => {
+    if (!isAutopilotActive) return;
+
+    const interval = setInterval(() => {
+      // Pick random SIP target between ₹15,000 and ₹1,35,000 in steps of ₹5,000
+      const randomSip = Math.floor(Math.random() * 25 + 3) * 5000;
+      // Pick random CAGR target between 9% and 19.5% in steps of 0.5%
+      const randomCagr = Math.floor(Math.random() * 22 + 18) * 0.5;
+
+      setSipTarget(randomSip);
+      setCagrTarget(randomCagr);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [isAutopilotActive]);
+
+  // Autopilot: Smoothly interpolate (LERP) current sliders towards targets
+  useEffect(() => {
+    if (!isAutopilotActive) return;
+
+    const interval = setInterval(() => {
+      const curSip = currentSipRef.current;
+      const curCagr = currentCagrRef.current;
+
+      const needsSipUpdate = Math.abs(sipTarget - curSip) >= 50;
+      const needsCagrUpdate = Math.abs(cagrTarget - curCagr) >= 0.05;
+
+      // Skip updating React state if values are already at their target coordinates
+      if (!needsSipUpdate && !needsCagrUpdate) return;
+
+      if (needsSipUpdate) {
+        setSipSlider((current) => {
+          const diff = sipTarget - current;
+          if (Math.abs(diff) < 50) return sipTarget;
+          return current + diff * 0.08; // smooth LERP interpolation
+        });
+      }
+
+      if (needsCagrUpdate) {
+        setCagrSlider((current) => {
+          const diff = cagrTarget - current;
+          if (Math.abs(diff) < 0.05) return cagrTarget;
+          return current + diff * 0.08;
+        });
+      }
+    }, 20);
+
+    return () => clearInterval(interval);
+  }, [isAutopilotActive, sipTarget, cagrTarget]);
+
+  // Interaction Handler: pauses autopilot when user drags, restarts idle timer
+  const handleUserInteraction = (rawSip, rawCagr) => {
+    // Snap manual inputs to nearest 1000 for SIP and 0.1 for CAGR to keep numbers clean
+    const snappedSip = Math.round(rawSip / 1000) * 1000;
+    const snappedCagr = Math.round(rawCagr * 10) / 10;
+
+    setIsAutopilotActive(false);
+    setSipSlider(snappedSip);
+    setCagrSlider(snappedCagr);
+    setSipTarget(snappedSip);
+    setCagrTarget(snappedCagr);
+
+    if (autopilotTimerRef.current) {
+      clearTimeout(autopilotTimerRef.current);
+    }
+
+    // Auto-resume autopilot after 5 seconds of complete user idle time
+    autopilotTimerRef.current = setTimeout(() => {
+      setIsAutopilotActive(true);
+    }, 5000);
+  };
+
+  // Clean up idle timer on unmount
+  useEffect(() => {
+    return () => {
+      if (autopilotTimerRef.current) {
+        clearTimeout(autopilotTimerRef.current);
+      }
+    };
+  }, []);
+
+  const formatINR = (value) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
+  return (
+    <div className="landing-viewport animate-fade-in">
+      
+      {/* 1. HERO SECTION */}
+      <section className="hero-section flex-center" style={{ 
+        position: "relative",
+        minHeight: "60vh", 
+        width: "100%",
+        overflow: "hidden"
+      }}>
+        
+        <ParticleBackground />
+
+        <div className="hero-glowing-blob blob-1"></div>
+        <div className="hero-glowing-blob blob-2"></div>
+        
+        <div className="hero-content-container">
+          <div className="hero-flex-wrapper">
+            
+            {/* Left Column: Legacy Typography & Reviews */}
+            <div style={{ textAlign: "left" }}>
+              {/* Trust Badge */}
+              <div className="glass-card flex-center" style={{ 
+                width: "fit-content", 
+                margin: "0 auto 20px 0", 
+                padding: "6px 16px", 
+                borderRadius: "30px", 
+                gap: "10px",
+                background: theme === "light" ? "rgba(15, 23, 42, 0.04)" : "rgba(255, 255, 255, 0.02)",
+                border: theme === "light" ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(255, 255, 255, 0.05)",
+                transition: "var(--transition-smooth)"
+              }}>
+                <div className="flex-center" style={{ gap: "2px" }}>
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} style={{ color: "#00c853", fontSize: "14px" }}>★</span>
+                  ))}
+                </div>
+                <span style={{ fontSize: "11px", color: "var(--text-secondary)", fontWeight: "600" }}>
+                  Rating <strong style={{ color: theme === "light" ? "var(--text-primary)" : "#ffffff" }}>4.8 / 5</strong> (Based on 138 client reviews)
+                </span>
+              </div>
+
+              <h1 className="hero-title" style={{ 
+                fontSize: "clamp(30px, 4.2vw, 48px)", 
+                lineHeight: "1.1", 
+                fontWeight: "800",
+                marginBottom: "clamp(12px, 2vw, 24px)" 
+              }}>
+                Building Clarity.<br />
+                Creating Confidence.<br />
+                <span className="highlight-text-gradient">Guiding Enduring Wealth.</span>
+              </h1>
+              <p className="hero-subtitle" style={{ 
+                fontSize: "clamp(13px, 1.6vw, 15px)", 
+                color: "var(--text-secondary)", 
+                lineHeight: "1.7", 
+                marginBottom: "clamp(20px, 3vw, 32px)",
+                maxWidth: "550px"
+              }}>
+                Fintelyx Investments partners with clients to bridge knowledge, discipline, and strategy. Our awareness-led approach enables thoughtful investing, intelligent protection, and long-term financial progress.
+              </p>
+              
+              <div className="hero-actions flex-center" style={{ justifyContent: "flex-start", gap: "16px" }}>
+                <button className="btn-primary" onClick={() => {
+                  const el = document.getElementById("about-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }} style={{ padding: "12px 28px" }}>
+                  Discover More <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column: Live Interactive Forecast Card */}
+            <div className="animate-float" style={{ width: "100%", display: "flex", justifyContent: "center", zIndex: 10 }}>
+              <div className="hero-dashboard-preview-card">
+                
+                {/* Header Row with Autopilot indicator */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span className="forecast-pill">Interactive Forecast</span>
+                    {isAutopilotActive && (
+                      <span className="flex-center" style={{
+                        background: "rgba(6, 182, 212, 0.12)",
+                        border: "1px solid rgba(6, 182, 212, 0.3)",
+                        color: "var(--accent-cyan)",
+                        padding: "2px 8px",
+                        borderRadius: "4px",
+                        fontSize: "8px",
+                        fontWeight: "800",
+                        letterSpacing: "0.05em",
+                        textTransform: "uppercase",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px"
+                      }}>
+                        <span className="autopilot-pulse-dot"></span>
+                        Simulating
+                      </span>
+                    )}
+                  </div>
+                  <div className="preview-growth-badge">
+                    <TrendingUp size={12} style={{ marginRight: "4px" }} /> +{(cagrSlider * 1.7).toFixed(1)}% CAGR
+                  </div>
+                </div>
+
+                {/* Big Projected Value Display */}
+                <div style={{ margin: "20px 0 16px" }}>
+                  <span style={{ fontSize: "10px", color: "var(--text-muted)", letterSpacing: "0.08em", fontWeight: "700", textTransform: "uppercase" }}>
+                    Projected Corpus (15 Years)
+                  </span>
+                  <h3 className="preview-corpus-number">
+                    {formatINR(projectedCorpus)}
+                  </h3>
+                </div>
+
+                {/* SVG Mini Interactive Chart Block */}
+                <div style={{ 
+                  position: "relative", 
+                  width: "100%", 
+                  height: "115px", 
+                  background: theme === "light" ? "rgba(15, 23, 42, 0.04)" : "rgba(0, 0, 0, 0.25)",
+                  borderRadius: "16px",
+                  border: theme === "light" ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(255, 255, 255, 0.04)",
+                  padding: "12px",
+                  overflow: "hidden",
+                  marginTop: "16px",
+                  transition: "var(--transition-smooth)"
+                }}>
+                  {/* Subtle Grid guides */}
+                  <div style={{ position: "absolute", top: "25%", left: 0, right: 0, height: "1px", background: theme === "light" ? "rgba(15, 23, 42, 0.03)" : "rgba(255, 255, 255, 0.02)" }}></div>
+                  <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: "1px", background: theme === "light" ? "rgba(15, 23, 42, 0.03)" : "rgba(255, 255, 255, 0.02)" }}></div>
+                  <div style={{ position: "absolute", top: "75%", left: 0, right: 0, height: "1px", background: theme === "light" ? "rgba(15, 23, 42, 0.03)" : "rgba(255, 255, 255, 0.02)" }}></div>
+                  
+                  {/* Dynamic SVG Compound Growth Vector */}
+                  <svg width="100%" height="100%" viewBox="0 0 360 120" style={{ overflow: "visible" }}>
+                    <defs>
+                      <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="var(--accent-green)" stopOpacity="0.25" />
+                        <stop offset="100%" stopColor="var(--accent-green)" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    
+                    {/* Shadow underneath the line */}
+                    {svgPathData && (
+                      <path
+                        d={`${svgPathData} L 360,110 L 0,110 Z`}
+                        fill="url(#chartGradient)"
+                      />
+                    )}
+                    
+                    {/* Glowing exponential growth line */}
+                    {svgPathData && (
+                      <path
+                        d={svgPathData}
+                        fill="none"
+                        stroke="var(--accent-green)"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{ filter: "drop-shadow(0 2px 8px var(--accent-green-glow))" }}
+                      />
+                    )}
+                    
+                    {/* End terminal node indicator */}
+                    <circle
+                      cx="360"
+                      cy={svgEndCoordinate}
+                      r="5"
+                      fill="#ffffff"
+                      stroke="var(--accent-green)"
+                      strokeWidth="2"
+                      style={{ filter: "drop-shadow(0 0 6px var(--accent-green-glow))" }}
+                    />
+                  </svg>
+                  
+                  {/* Custom coordinates tracker tag */}
+                  <div style={{
+                    position: "absolute",
+                    top: `${Math.max(15, svgEndCoordinate - 24)}px`,
+                    right: "12px",
+                    background: "var(--bg-tertiary)",
+                    border: theme === "light" ? "1px solid rgba(15, 23, 42, 0.1)" : "1px solid rgba(255, 255, 255, 0.08)",
+                    borderRadius: "6px",
+                    padding: "3px 8px",
+                    fontSize: "9px",
+                    fontWeight: "700",
+                    color: "var(--accent-cyan)",
+                    boxShadow: theme === "light" ? "0 4px 10px rgba(0,0,0,0.05)" : "0 4px 10px rgba(0,0,0,0.3)",
+                    transition: "var(--transition-smooth)"
+                  }}>
+                    Year 15
+                  </div>
+                </div>
+
+                {/* Inline drag-sliders for instant compound simulation */}
+                <div className="preview-sliders-panel">
+                  <div className="preview-slider-item">
+                    <div className="preview-slider-header">
+                      <span className="preview-slider-label">Monthly SIP Allocator</span>
+                      <span className="preview-slider-val">{formatINR(sipSlider)}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="5000"
+                      max="150000"
+                      step="1"
+                      value={sipSlider}
+                      onChange={(e) => handleUserInteraction(Number(e.target.value), cagrSlider)}
+                      className="preview-range-input"
+                    />
+                  </div>
+
+                  <div className="preview-slider-item">
+                    <div className="preview-slider-header">
+                      <span className="preview-slider-label">Annual Expected Returns</span>
+                      <span className="preview-slider-val">{cagrSlider.toFixed(1)}% p.a.</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="8"
+                      max="20"
+                      step="0.01"
+                      value={cagrSlider}
+                      onChange={(e) => handleUserInteraction(sipSlider, Number(e.target.value))}
+                      className="preview-range-input"
+                    />
+                  </div>
+                </div>
+
+                {/* Dashboard micro metrics row */}
+                <div className="preview-metrics-footer">
+                  <div className="preview-metric-box">
+                    <div className="preview-metric-box-label">Total Outlay</div>
+                    <div className="preview-metric-box-val">{formatINR(sipSlider * 12 * 15)}</div>
+                  </div>
+                  <div className="preview-metric-box">
+                    <div className="preview-metric-box-label">Compound Interest</div>
+                    <div className="preview-metric-box-val">
+                      {formatINR(Math.max(0, projectedCorpus - (sipSlider * 12 * 15)))}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      {/* 2. CURRENCY / STOCK TICKERS BAR */}
+      <section className="market-ticker-banner">
+        <div className="ticker-track">
+          <div className="ticker-item flex-center">
+            <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
+          </div>
+          <div className="ticker-item flex-center">
+            <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
+          </div>
+          <div className="ticker-item flex-center">
+            <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
+          </div>
+          <div className="ticker-item flex-center">
+            <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
+          </div>
+          {/* Double content for infinite loop effect */}
+          <div className="ticker-item flex-center">
+            <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
+          </div>
+          <div className="ticker-item flex-center">
+            <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
+          </div>
+          <div className="ticker-item flex-center">
+            <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
+          </div>
+          <div className="ticker-item flex-center">
+            <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. ABOUT US & PHILOSOPHY PILLARS */}
+      <section id="about-section" className="features-grid-section" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "80px" }}>
+        <div className="content-container">
+          <div className="section-title-wrapper text-center">
+            <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>ABOUT US</span>
+            <h2>Trusted Partner Along Your Financial Journey</h2>
+            <p style={{ maxWidth: "800px", margin: "16px auto 0", lineHeight: "1.8", color: "var(--text-secondary)" }}>
+              Fintelyx Investments partners with clients to bridge knowledge, discipline, and strategy. Our awareness-led approach and curated solutions enable thoughtful investing, intelligent protection, and long-term financial progress.
+            </p>
+          </div>
+
+          <div className="features-grid" style={{ marginTop: "40px" }}>
+            {/* Card 1 */}
+            <div className="glass-card feature-card">
+              <Cpu className="feature-icon" size={28} />
+              <h3>Clarity Above Complexity</h3>
+              <p>Thoughtfully designed investment frameworks that align your financial goals with appropriate risk and time horizons.</p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="glass-card feature-card">
+              <TrendingUp className="feature-icon" size={28} />
+              <h3>Structure That Evolves</h3>
+              <p>Work with experienced partners who bring clarity to market complexity and help you navigate investment choices with confidence.</p>
+            </div>
+
+            {/* Card 3 */}
+            <div className="glass-card feature-card">
+              <Landmark className="feature-icon" size={28} />
+              <h3>Partnership Over Transactions</h3>
+              <p>A disciplined approach that integrates risk assessment, goal mapping, and product suitability to deliver customised investment outcomes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. SMART INVESTMENTS SOLUTIONS GRID */}
+      <section className="features-grid-section" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "80px" }}>
+        <div className="content-container">
+          <div className="section-title-wrapper text-center">
+            <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>OUR SOLUTIONS</span>
+            <h2>Smart Investments. Enduring Value.</h2>
+            <p>Curated access and advisory mapping aligned to your individual profile.</p>
+          </div>
+
+          <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px", marginTop: "40px" }}>
+            {/* Solution 1 */}
+            <div className="glass-card feature-card">
+              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
+                <span className="dot dot-gain"></span> Registered Mutual Funds
+              </h4>
+              <p>Registered mutual fund distribution, systematic onboarding, and systematic investment plan (SIP) mapping.</p>
+            </div>
+
+            {/* Solution 2 */}
+            <div className="glass-card feature-card">
+              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
+                <span className="dot dot-gain"></span> Specialised Funds
+              </h4>
+              <p>Curated access to focused equity, debt, and hybrid strategies tailored to your risk profile.</p>
+            </div>
+
+            {/* Solution 3 */}
+            <div className="glass-card feature-card">
+              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
+                <span className="dot dot-gain"></span> PMS Introductions
+              </h4>
+              <p>Introductions to top PMS managers aligned to your long-term wealth growth goals.</p>
+            </div>
+
+            {/* Solution 4 */}
+            <div className="glass-card feature-card">
+              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
+                <span className="dot dot-gain"></span> AIF Access
+              </h4>
+              <p>Access to private equity, venture capital, long-short strategies, and structured credit solutions.</p>
+            </div>
+
+            {/* Solution 5 */}
+            <div className="glass-card feature-card">
+              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
+                <span className="dot dot-gain"></span> Retirement & Wealth Security
+              </h4>
+              <p>Comprehensive retirement planning, cashflow scheduling, and complementary protection/insurance solutions.</p>
+            </div>
+
+            {/* Solution 6 */}
+            <div className="glass-card feature-card">
+              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
+                <span className="dot dot-gain"></span> Future Education Funding
+              </h4>
+              <p>Future-ready child education funding plans to cover collegiate and higher academic milestones.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. PROCESS - HOW WE WORK */}
+      <section className="features-grid-section" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "80px" }}>
+        <div className="content-container">
+          <div className="section-title-wrapper text-center">
+            <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>OUR WORKFLOW</span>
+            <h2>How We Work</h2>
+            <p>A structured, client-first collaborative model designed for clarity and execution.</p>
+          </div>
+
+          <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginTop: "40px" }}>
+            {/* Step 1 */}
+            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
+              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>01</div>
+              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Discovery</h3>
+              <p style={{ textAlign: "center" }}>Understanding your priorities, values, and capital constraints.</p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
+              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>02</div>
+              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Evaluation</h3>
+              <p style={{ textAlign: "center" }}>Suitability mapping, asset screening, and provider suitability evaluation.</p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
+              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>03</div>
+              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Facilitation</h3>
+              <p style={{ textAlign: "center" }}>Onboarding, documentation, and coordination.</p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="glass-card feature-card text-center" style={{ padding: "30px 20px" }}>
+              <div style={{ fontSize: "28px", fontWeight: "800", color: "var(--accent-green)", marginBottom: "12px", fontFamily: "var(--font-display)" }}>04</div>
+              <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Ongoing Support</h3>
+              <p style={{ textAlign: "center" }}>Reviews, adjustments, and continuous guidance.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CTA BANNER SECTION */}
+      <section className="features-grid-section" style={{ 
+        borderTop: "1px solid var(--border-light)", 
+        padding: "80px 24px",
+        background: "linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%)",
+        borderRadius: "24px",
+        marginTop: "40px",
+        textAlign: "center"
+      }}>
+        <div className="content-container">
+          <div className="section-title-wrapper text-center" style={{ marginBottom: "32px" }}>
+            <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>GET IN TOUCH</span>
+            <h2>Where Investments Meet Intelligent Strategy.</h2>
+            <p>Ready to structure your wealth path? Connect with our designated partners today.</p>
+          </div>
+
+          <div className="flex-center" style={{ gap: "24px", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+            <a href="tel:+919008867475" className="btn-primary" style={{ padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: "700" }}>
+              Call Partner: +91 90088 67475
+            </a>
+            <a href="mailto:wealth@fintelyxinvestments.com" className="btn-secondary" style={{ padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: "700" }}>
+              Email Support
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. AMFI REGISTRATION LICENSE & CREDENTIALS SECTION */}
+      <section className="landing-regulatory-badge-section flex-center" style={{ borderTop: "1px solid var(--border-light)", marginTop: "60px" }}>
+        <div className="content-container flex-center">
+          <div className="regulatory-glass-badge flex-center">
+            <div className="badge-stamp-icon flex-center">
+              <ShieldCheck size={32} />
+            </div>
+            <div className="regulatory-text">
+              <h4>Fintelyx Investment Services LLP</h4>
+              <p className="reg-badge-desc">
+                AMFI Registered Mutual Fund Distributor &nbsp;|&nbsp; <strong>ARN-345579</strong>
+              </p>
+              <p className="reg-legal-note">
+                Mutual Fund investments are subject to market risks. Please read all scheme-related documents carefully before investing. ARN distributor license persists in accordance with AMFI regulations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+  );
+}
