@@ -579,22 +579,46 @@
   padding: 20px;
 }
 
+/* Custom glassmorphic select dropdown for mobile */
+.hub-mobile-select {
+  display: none;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 20px;
+  width: 100%;
+  max-width: 320px;
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.hub-mobile-select:focus {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10px var(--accent-green-glow);
+}
+
+.hub-mobile-select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
 @media (max-width: 640px) {
-  .hub-nav-wrapper {
-    justify-content: flex-start;
-    overflow-x: auto;
-    width: 100%;
-    padding: 0 4px 12px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .hub-nav-wrapper::-webkit-scrollbar {
-    display: none;
-  }
   .hub-glass-tabs {
-    white-space: nowrap;
-    display: inline-flex;
-    border-radius: 25px;
+    display: none !important;
+  }
+  .hub-mobile-select {
+    display: block !important;
+  }
+  .hub-nav-wrapper {
+    justify-content: center;
+    width: 100%;
   }
 }
 

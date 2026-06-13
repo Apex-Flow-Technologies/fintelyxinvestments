@@ -21,6 +21,16 @@ export default function CalculatorHub({ theme }) {
 
       {/* Segmented Tab Switcher */}
       <div className="hub-nav-wrapper">
+        <select 
+          className="hub-mobile-select"
+          value={activeTab}
+          onChange={(e) => setActiveTab(e.target.value)}
+        >
+          <option value="sip">SIP Step-Up Calculator</option>
+          <option value="goal">Wealth Goal Planner</option>
+          <option value="backtest">Portfolio Backtester</option>
+        </select>
+
         <div className="hub-glass-tabs">
           <button 
             className={`hub-tab ${activeTab === "sip" ? "active" : ""}`}

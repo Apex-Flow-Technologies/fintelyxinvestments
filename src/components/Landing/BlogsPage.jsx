@@ -4,8 +4,11 @@ import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "../../database/firebase";
 import "../../styles/landing.css";
 
-export default function BlogsPage() {
-  const [activeArticle, setActiveArticle] = useState(null);
+export default function BlogsPage({ activeBlogId, onBlogChange }) {
+  const activeArticle = activeBlogId;
+  const setActiveArticle = (id) => {
+    if (onBlogChange) onBlogChange(id);
+  };
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,7 +45,7 @@ export default function BlogsPage() {
       <div className="blogs-layout-grid">
         
         {/* Left Side: Article List */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        <div className={`blogs-list-container ${activeArticle ? "mobile-hidden" : ""}`}>
           {loading ? (
             <div className="flex-center" style={{ padding: "40px 0", color: "var(--text-muted)" }}>
               <Loader2 className="processing-spinner" size={24} />
@@ -88,9 +91,31 @@ export default function BlogsPage() {
         </div>
 
         {/* Right Side: Article Body glass-card */}
-        <div className="glass-card" style={{ padding: "40px", minHeight: "400px", display: "flex", flexDirection: "column", justifyContent: "flex-start", textAlign: "left" }}>
+        <div className={`glass-card blogs-detail-container ${!activeArticle ? "mobile-hidden" : ""}`} style={{ padding: "40px", minHeight: "400px", display: "flex", flexDirection: "column", justifyContent: "flex-start", textAlign: "left" }}>
           {activeArticle ? (
             <div className="animate-fade-in">
+              <button 
+                className="partner-detail-back-btn mobile-only-back"
+                onClick={() => setActiveArticle(null)}
+                style={{ 
+                  display: "inline-flex", 
+                  alignItems: "center", 
+                  gap: "8px", 
+                  background: "transparent", 
+                  border: "1px solid var(--border-light)", 
+                  color: "var(--text-secondary)", 
+                  fontFamily: "var(--font-display)", 
+                  fontWeight: "600", 
+                  fontSize: "13px", 
+                  padding: "10px 20px", 
+                  borderRadius: "12px", 
+                  cursor: "pointer", 
+                  transition: "var(--transition-smooth)",
+                  marginBottom: "20px"
+                }}
+              >
+                ← Back to Article List
+              </button>
               {(() => {
                 const article = blogs.find(a => a.id === activeArticle);
                 if (!article) return null;

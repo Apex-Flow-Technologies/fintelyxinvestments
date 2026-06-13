@@ -18,33 +18,40 @@ function FintelyxApp() {
   // Navigation Tab State
   const [activeTab, setActiveTab] = useState("home");
   const [selectedPartnerId, setSelectedPartnerId] = useState(null);
+  const [selectedBlogId, setSelectedBlogId] = useState(null);
 
   // Parse path to get tab and partner
   const parsePath = (path) => {
     const segments = path.split("/").filter(Boolean);
-    if (segments.length === 0) return { tab: "home", partner: null };
+    if (segments.length === 0) return { tab: "home", partner: null, blogId: null };
     
     const firstSegment = segments[0];
     if (firstSegment === "about") {
       const partnerId = segments[1] || null;
-      return { tab: "about", partner: partnerId };
+      return { tab: "about", partner: partnerId, blogId: null };
+    }
+    
+    if (firstSegment === "blogs") {
+      const blogId = segments[1] || null;
+      return { tab: "blogs", partner: null, blogId: blogId };
     }
     
     // Valid tabs
     const validTabs = ["home", "about", "services", "calculators", "blogs", "contact", "privacy", "admin"];
     if (validTabs.includes(firstSegment)) {
-      return { tab: firstSegment, partner: null };
+      return { tab: firstSegment, partner: null, blogId: null };
     }
     
-    return { tab: "home", partner: null };
+    return { tab: "home", partner: null, blogId: null };
   };
 
   // Sync state with URL on initial load and popstate
   useEffect(() => {
     const handleLocationChange = () => {
-      const { tab, partner } = parsePath(window.location.pathname);
+      const { tab, partner, blogId } = parsePath(window.location.pathname);
       setActiveTab(tab);
       setSelectedPartnerId(partner);
+      setSelectedBlogId(blogId);
     };
 
     // Run on mount
@@ -57,9 +64,10 @@ function FintelyxApp() {
   // Navigation helper
   const navigateTo = (path) => {
     window.history.pushState(null, "", path);
-    const { tab, partner } = parsePath(path);
+    const { tab, partner, blogId } = parsePath(path);
     setActiveTab(tab);
     setSelectedPartnerId(partner);
+    setSelectedBlogId(blogId);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
@@ -113,7 +121,12 @@ function FintelyxApp() {
               <CalculatorHub theme={theme} />
             )}
 
-            {activeTab === "blogs" && <BlogsPage />}
+            {activeTab === "blogs" && (
+              <BlogsPage 
+                activeBlogId={selectedBlogId}
+                onBlogChange={(id) => navigateTo(id ? `/blogs/${id}` : "/blogs")}
+              />
+            )}
 
             {activeTab === "contact" && <ContactPage />}
 
