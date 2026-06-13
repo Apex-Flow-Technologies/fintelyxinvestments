@@ -10,10 +10,58 @@ import BlogAdminPortal from "./components/Admin/BlogAdminPortal";
 import PrivacyPolicyPage from "./components/Landing/PrivacyPolicyPage";
 import CalculatorHub from "./components/Calculators/CalculatorHub";
 import "./index.css";
+import "./styles/landing.css";
+import "./styles/calculators.css";
+import "./styles/auth.css";
 
 function FintelyxApp() {
   // Navigation Tab State
   const [activeTab, setActiveTab] = useState("home");
+  const [selectedPartnerId, setSelectedPartnerId] = useState(null);
+
+  // Parse path to get tab and partner
+  const parsePath = (path) => {
+    const segments = path.split("/").filter(Boolean);
+    if (segments.length === 0) return { tab: "home", partner: null };
+    
+    const firstSegment = segments[0];
+    if (firstSegment === "about") {
+      const partnerId = segments[1] || null;
+      return { tab: "about", partner: partnerId };
+    }
+    
+    // Valid tabs
+    const validTabs = ["home", "about", "services", "calculators", "blogs", "contact", "privacy", "admin"];
+    if (validTabs.includes(firstSegment)) {
+      return { tab: firstSegment, partner: null };
+    }
+    
+    return { tab: "home", partner: null };
+  };
+
+  // Sync state with URL on initial load and popstate
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const { tab, partner } = parsePath(window.location.pathname);
+      setActiveTab(tab);
+      setSelectedPartnerId(partner);
+    };
+
+    // Run on mount
+    handleLocationChange();
+
+    window.addEventListener("popstate", handleLocationChange);
+    return () => window.removeEventListener("popstate", handleLocationChange);
+  }, []);
+
+  // Navigation helper
+  const navigateTo = (path) => {
+    window.history.pushState(null, "", path);
+    const { tab, partner } = parsePath(path);
+    setActiveTab(tab);
+    setSelectedPartnerId(partner);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
 
   // Theme State (Dark Mode default)
   const [theme, setTheme] = useState(() => {
@@ -34,7 +82,7 @@ function FintelyxApp() {
       {/* 1. Navbar */}
       <Navbar 
         activeTab={activeTab} 
-        onTabChange={(tab) => setActiveTab(tab)}
+        onTabChange={(tab) => navigateTo(tab === "home" ? "/" : `/${tab}`)}
         theme={theme}
         toggleTheme={toggleTheme}
       />
@@ -43,21 +91,26 @@ function FintelyxApp() {
       <main className="animate-fade-in" style={{ flex: 1, width: "100%", paddingTop: "80px" }}>
         {activeTab === "home" ? (
           <LandingPage 
-            onNavToCalculators={() => setActiveTab("calculators")}
+            onNavToCalculators={() => navigateTo("/calculators")}
             theme={theme}
           />
         ) : (
           <div className="content-container">
-            {activeTab === "about" && <AboutPage />}
+            {activeTab === "about" && (
+              <AboutPage 
+                partnerId={selectedPartnerId}
+                onPartnerChange={(id) => navigateTo(id ? `/about/${id}` : "/about")}
+              />
+            )}
             
             {activeTab === "services" && (
               <ServicesPage 
-                onNavToCalculators={() => setActiveTab("calculators")}
+                onNavToCalculators={() => navigateTo("/calculators")}
               />
             )}
             
             {activeTab === "calculators" && (
-              <CalculatorHub />
+              <CalculatorHub theme={theme} />
             )}
 
             {activeTab === "blogs" && <BlogsPage />}
@@ -67,14 +120,14 @@ function FintelyxApp() {
             {activeTab === "privacy" && <PrivacyPolicyPage />}
 
             {activeTab === "admin" && (
-              <BlogAdminPortal onClose={() => setActiveTab("home")} />
+              <BlogAdminPortal onClose={() => navigateTo("/")} />
             )}
           </div>
         )}
       </main>
 
       {/* 3. Footer */}
-      <Footer onTabChange={(tab) => setActiveTab(tab)} />
+      <Footer onTabChange={(tab) => navigateTo(tab === "home" ? "/" : `/${tab}`)} />
     </div>
   );
 }

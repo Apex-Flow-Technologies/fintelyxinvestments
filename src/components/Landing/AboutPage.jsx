@@ -2,80 +2,85 @@ import React, { useState } from "react";
 import { ShieldCheck, Users, Landmark, Award, HelpCircle, ArrowLeft, Briefcase, Compass, MessageSquare, CheckCircle2 } from "lucide-react";
 import "../../styles/landing.css";
 
-export default function AboutPage() {
-  const [selectedPartner, setSelectedPartner] = useState(null);
+const partners = [
+  {
+    id: "sadhiq",
+    initial: "S",
+    name: "Sadhiq",
+    role: "PRINCIPAL PARTNER",
+    department: "INVESTMENT SERVICES",
+    desc: "A financial educator at heart, Sadhiq applies deep market understanding and practical investing insight to guide clients in allocating capital wisely, managing risk, and building long-term wealth. His advisory philosophy is rooted in awareness, discipline, and informed decision-making.",
+    img: "/assets/sadhiq.png",
+    experience: "8+ Years in Financial Advisory & Compounding Literacy Desk",
+    philosophy: "Advising is not just about choosing schemes, but educating investors to ride out market cycles with peace of mind. Compound interest works best when matched with investor discipline.",
+    credentials: [
+      "AMFI Registered Mutual Fund Advisor (ARN-345579)",
+      "Certified Compounding Literacy Educator",
+      "Expert in Strategic Asset Allocation & Risk Mitigation"
+    ],
+    expertise: [
+      "Mutual Fund Portfolio Structuring",
+      "Retirement & Wealth Goal Planning",
+      "SIP Step-Up Modeling & Optimization",
+      "Risk Profiling & Volatility Management"
+    ],
+    whatsapp: "https://wa.me/919008867475"
+  },
+  {
+    id: "antony",
+    initial: "A",
+    name: "Antony",
+    role: "PARTNER",
+    department: "OPERATIONS & CLIENT SERVICING",
+    desc: "From Institutional trade operations background Antony brings operational governance, risk awareness, and control discipline into the advisory and wealth management space.",
+    img: "/assets/antony.png",
+    experience: "Ex-Institutional Trade Operations Lead & Risk Analyst",
+    philosophy: "Operational robustness and risk governance are the silent pillars of successful wealth creation. Every transaction deserves institutional-grade oversight and compliance.",
+    credentials: [
+      "Trade Operations Governance Expert",
+      "LLP Designated Partner (LLPIN: ACP-0306)",
+      "Regulatory Compliance Audit Specialist"
+    ],
+    expertise: [
+      "Client Onboarding & KYC Governance",
+      "Operational Risk Management",
+      "Distributor Transaction Reconciliation",
+      "Compliance Mandate Auditing"
+    ],
+    whatsapp: "https://wa.me/919150997478"
+  },
+  {
+    id: "sundhar",
+    initial: "S",
+    name: "Sundhar",
+    role: "PARTNER",
+    department: "PORTFOLIO SYSTEMATICS",
+    desc: "Sundhar coordinates mutual fund systematic allocations, maps long-term compounding projection strategies, and manages capital market research activities to ensure seamless client portal integrations.",
+    img: "/assets/sundhar.png",
+    experience: "Quantitative Capital Markets Researcher & Systems Engineer",
+    philosophy: "Using data-driven systematics and high-fidelity projection tools allows investors to visualize their financial futures with absolute mathematical clarity.",
+    credentials: [
+      "Capital Market Research Specialist",
+      "Portfolio Analytics Systems Architect",
+      "Designated Partner of Fintelyx Investments"
+    ],
+    expertise: [
+      "Mutual Fund Systematic Allocations",
+      "CAGR Projection Modeling",
+      "Client Portal & API Integration",
+      "Capital Markets Historical Analysis"
+    ],
+    whatsapp: "https://wa.me/919008867475"
+  }
+];
 
-  const partners = [
-    {
-      id: "sadhiq",
-      initial: "S",
-      name: "Sadhiq",
-      role: "PRINCIPAL PARTNER",
-      department: "INVESTMENT SERVICES",
-      desc: "A financial educator at heart, Sadhiq applies deep market understanding and practical investing insight to guide clients in allocating capital wisely, managing risk, and building long-term wealth. His advisory philosophy is rooted in awareness, discipline, and informed decision-making.",
-      img: "/assets/sadhiq.png",
-      experience: "8+ Years in Financial Advisory & Compounding Literacy Desk",
-      philosophy: "Advising is not just about choosing schemes, but educating investors to ride out market cycles with peace of mind. Compound interest works best when matched with investor discipline.",
-      credentials: [
-        "AMFI Registered Mutual Fund Advisor (ARN-345579)",
-        "Certified Compounding Literacy Educator",
-        "Expert in Strategic Asset Allocation & Risk Mitigation"
-      ],
-      expertise: [
-        "Mutual Fund Portfolio Structuring",
-        "Retirement & Wealth Goal Planning",
-        "SIP Step-Up Modeling & Optimization",
-        "Risk Profiling & Volatility Management"
-      ],
-      whatsapp: "https://wa.me/919008867475"
-    },
-    {
-      id: "antony",
-      initial: "A",
-      name: "Antony",
-      role: "PARTNER",
-      department: "OPERATIONS & CLIENT SERVICING",
-      desc: "From Institutional trade operations background Antony brings operational governance, risk awareness, and control discipline into the advisory and wealth management space.",
-      img: "/assets/antony.png",
-      experience: "Ex-Institutional Trade Operations Lead & Risk Analyst",
-      philosophy: "Operational robustness and risk governance are the silent pillars of successful wealth creation. Every transaction deserves institutional-grade oversight and compliance.",
-      credentials: [
-        "Trade Operations Governance Expert",
-        "LLP Designated Partner (LLPIN: ACP-0306)",
-        "Regulatory Compliance Audit Specialist"
-      ],
-      expertise: [
-        "Client Onboarding & KYC Governance",
-        "Operational Risk Management",
-        "Distributor Transaction Reconciliation",
-        "Compliance Mandate Auditing"
-      ],
-      whatsapp: "https://wa.me/919150997478"
-    },
-    {
-      id: "sundhar",
-      initial: "S",
-      name: "Sundhar",
-      role: "PARTNER",
-      department: "PORTFOLIO SYSTEMATICS",
-      desc: "Sundhar coordinates mutual fund systematic allocations, maps long-term compounding projection strategies, and manages capital market research activities to ensure seamless client portal integrations.",
-      img: "/assets/sundhar.png",
-      experience: "Quantitative Capital Markets Researcher & Systems Engineer",
-      philosophy: "Using data-driven systematics and high-fidelity projection tools allows investors to visualize their financial futures with absolute mathematical clarity.",
-      credentials: [
-        "Capital Market Research Specialist",
-        "Portfolio Analytics Systems Architect",
-        "Designated Partner of Fintelyx Investments"
-      ],
-      expertise: [
-        "Mutual Fund Systematic Allocations",
-        "CAGR Projection Modeling",
-        "Client Portal & API Integration",
-        "Capital Markets Historical Analysis"
-      ],
-      whatsapp: "https://wa.me/919008867475"
+export default function AboutPage({ partnerId, onPartnerChange }) {
+  const selectedPartner = partners.find(p => p.id === partnerId) || null;
+  const setSelectedPartner = (partner) => {
+    if (onPartnerChange) {
+      onPartnerChange(partner ? partner.id : null);
     }
-  ];
+  };
 
   if (selectedPartner) {
     return (
