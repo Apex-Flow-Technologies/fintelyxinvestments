@@ -1,7 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Sparkles, ArrowRight, ShieldCheck, TrendingUp, Cpu, Landmark } from "lucide-react";
 import ParticleBackground from "../Common/ParticleBackground";
+import { SOCIAL_FEED_CONFIG } from "../../config/socialFeeds";
 import "../../styles/landing.css";
+
+// Custom SVG Icons to bypass older lucide-react brand/media missing exports
+const YoutubeIcon = ({ size = 20, ...props }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25a29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="currentColor"></polygon></svg>
+);
+
+const InstagramIcon = ({ size = 20, ...props }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+);
+
+const PlayIcon = ({ size = 24, ...props }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+);
+
+const ExternalLinkIcon = ({ size = 14, ...props }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+);
 
 export default function LandingPage({ onNavToCalculators, theme }) {
 
@@ -144,6 +162,93 @@ export default function LandingPage({ onNavToCalculators, theme }) {
       if (autopilotTimerRef.current) {
         clearTimeout(autopilotTimerRef.current);
       }
+    };
+  }, []);
+
+  // Social media feeds state (initialised with high-fidelity fallbacks if dynamic fetch is blocked)
+  const [ytVideo, setYtVideo] = useState({
+    title: "Gold Crash = ₹6.5 Lakh Profit | Real MCX Trades, Real Results",
+    link: "https://www.youtube.com/shorts/cNg6ictbb-4",
+    thumbnail: "https://i4.ytimg.com/vi/cNg6ictbb-4/hqdefault.jpg",
+    pubDate: "11 Jun 2026"
+  });
+  const [igVideo, setIgVideo] = useState({
+    title: "Follow @lets_talk_money_with_sadhiq on Instagram for daily personal finance tips, reels, and wealth strategy updates.",
+    link: "https://www.instagram.com/lets_talk_money_with_sadhiq/",
+    thumbnail: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
+    pubDate: "Daily Updates"
+  });
+  const [loadingVideos, setLoadingVideos] = useState(true);
+  const [errorVideos, setErrorVideos] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchFeeds = async () => {
+      try {
+        setLoadingVideos(true);
+        setErrorVideos(false);
+
+        // 1. Fetch YouTube Feed
+        const ytUrl = `${SOCIAL_FEED_CONFIG.rssParserApi}?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${SOCIAL_FEED_CONFIG.youtubeChannelId}`;
+        const ytRes = await fetch(ytUrl);
+        const ytData = await ytRes.json();
+        
+        if (isMounted && ytData.status === "ok" && ytData.items && ytData.items.length > 0) {
+          const latestYt = ytData.items[0];
+          let videoId = "";
+          
+          if (latestYt.guid) {
+            const parts = latestYt.guid.split(":");
+            videoId = parts[parts.length - 1];
+          } else if (latestYt.link) {
+            const urlParams = new URLSearchParams(new URL(latestYt.link).search);
+            videoId = urlParams.get("v");
+          }
+
+          // Use medium quality thumbnail for fast load, standard fallback to high resolution
+          const thumbnail = videoId 
+            ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` 
+            : latestYt.thumbnail;
+
+          setYtVideo({
+            title: latestYt.title,
+            link: latestYt.link,
+            thumbnail: thumbnail,
+            pubDate: new Date(latestYt.pubDate).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            })
+          });
+        }
+
+        // 2. Fetch/Set Instagram Feed
+        // Direct scrapers are fragile, so we load our curated, high-fidelity default Instagram reel.
+        // If the client has a feed endpoint, we can hook it up here.
+        if (isMounted) {
+          setIgVideo({
+            title: "Follow @lets_talk_money_with_sadhiq on Instagram for daily personal finance tips, reels, and wealth strategy updates.",
+            link: SOCIAL_FEED_CONFIG.instagramProfileUrl,
+            thumbnail: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
+            pubDate: "Daily Updates"
+          });
+        }
+
+      } catch (err) {
+        console.warn("Video feeds fetch failed, using high-fidelity default data:", err);
+        if (isMounted) {
+          setErrorVideos(true);
+        }
+      } finally {
+        if (isMounted) {
+          setLoadingVideos(false);
+        }
+      }
+    };
+
+    fetchFeeds();
+    return () => {
+      isMounted = false;
     };
   }, []);
 
@@ -590,6 +695,93 @@ export default function LandingPage({ onNavToCalculators, theme }) {
                 <p>Reviews, adjustments, and continuous guidance.</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5.5 VIDEO INSIGHTS SECTION */}
+      <section className="video-insights-section">
+        <div className="content-container">
+          <div className="section-title-wrapper text-center">
+            <span className="partner-role-pill" style={{ display: "block", marginBottom: "8px", textTransform: "uppercase", fontSize: "11px", color: "var(--accent-green)", fontWeight: "800", letterSpacing: "0.1em" }}>WATCH & LEARN</span>
+            <h2>Latest Video Insights</h2>
+            <p>Explore our recent financial guidance updates directly on YouTube and Instagram.</p>
+          </div>
+
+          <div className="video-cards-grid">
+            {/* YouTube Card */}
+            {loadingVideos ? (
+              <div className="video-insight-card">
+                <div className="video-thumbnail-container skeleton-pulse"></div>
+                <div className="video-info-block">
+                  <div className="skeleton-title skeleton-pulse"></div>
+                  <div className="skeleton-title skeleton-pulse" style={{ width: "70%" }}></div>
+                  <div className="video-info-footer">
+                    <div className="skeleton-text skeleton-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <a href={ytVideo.link} target="_blank" rel="noopener noreferrer" className="video-insight-card">
+                <div className="video-thumbnail-container">
+                  <span className="video-badge video-badge-youtube">
+                    <YoutubeIcon size={12} /> YouTube
+                  </span>
+                  <img src={ytVideo.thumbnail} alt={ytVideo.title} className="video-thumbnail" />
+                  <div className="video-play-overlay">
+                    <div className="play-btn-circle">
+                      <PlayIcon size={24} fill="white" style={{ marginLeft: "4px" }} />
+                    </div>
+                  </div>
+                </div>
+                <div className="video-info-block">
+                  <h3 className="video-info-title">{ytVideo.title}</h3>
+                  <div className="video-info-footer">
+                    <span className="video-info-date">{ytVideo.pubDate}</span>
+                    <span className="video-info-action">
+                      Watch Video <ArrowRight size={14} />
+                    </span>
+                  </div>
+                </div>
+              </a>
+            )}
+
+            {/* Instagram Card */}
+            {loadingVideos ? (
+              <div className="video-insight-card">
+                <div className="video-thumbnail-container reel-container skeleton-pulse"></div>
+                <div className="video-info-block">
+                  <div className="skeleton-title skeleton-pulse"></div>
+                  <div className="skeleton-title skeleton-pulse" style={{ width: "70%" }}></div>
+                  <div className="video-info-footer">
+                    <div className="skeleton-text skeleton-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <a href={igVideo.link} target="_blank" rel="noopener noreferrer" className="video-insight-card">
+                <div className="video-thumbnail-container reel-container">
+                  <span className="video-badge video-badge-instagram">
+                    <InstagramIcon size={12} /> Instagram
+                  </span>
+                  <img src={igVideo.thumbnail} alt={igVideo.title} className="video-thumbnail" />
+                  <div className="video-play-overlay">
+                    <div className="play-btn-circle">
+                      <PlayIcon size={24} fill="white" style={{ marginLeft: "4px" }} />
+                    </div>
+                  </div>
+                </div>
+                <div className="video-info-block">
+                  <h3 className="video-info-title">{igVideo.title}</h3>
+                  <div className="video-info-footer">
+                    <span className="video-info-date">{igVideo.pubDate}</span>
+                    <span className="video-info-action">
+                      View Reel <ArrowRight size={14} />
+                    </span>
+                  </div>
+                </div>
+              </a>
+            )}
           </div>
         </div>
       </section>
