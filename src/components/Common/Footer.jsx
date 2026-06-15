@@ -1,6 +1,6 @@
 import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
 
-export default function Footer({ onTabChange }) {
+export default function Footer({ onTabChange, theme }) {
   return (
     <footer style={{
       background: "var(--bg-secondary)",
@@ -36,7 +36,9 @@ export default function Footer({ onTabChange }) {
                   height: "44px", 
                   width: "auto", 
                   display: "block",
-                  filter: "brightness(2.8) contrast(1.1) drop-shadow(0 0 10px rgba(16, 185, 129, 0.25))"
+                  filter: theme === "light"
+                    ? "brightness(1.1) contrast(1.1) drop-shadow(0 0 8px rgba(16, 185, 129, 0.15))"
+                    : "brightness(2.8) contrast(1.1) drop-shadow(0 0 10px rgba(16, 185, 129, 0.25))"
                 }} 
               />
               <span style={{ 

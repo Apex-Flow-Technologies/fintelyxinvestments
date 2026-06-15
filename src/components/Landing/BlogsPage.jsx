@@ -68,7 +68,7 @@ export default function BlogsPage({ activeBlogId, onBlogChange }) {
                     textAlign: "left",
                     transition: "var(--transition-smooth)",
                     border: isActive ? "1px solid rgba(16, 185, 129, 0.4)" : "1px solid var(--border-light)",
-                    background: isActive ? "rgba(16, 185, 129, 0.04)" : "rgba(255, 255, 255, 0.01)"
+                    background: isActive ? "rgba(16, 185, 129, 0.04)" : "var(--glass-bg)"
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%", marginBottom: "10px" }}>

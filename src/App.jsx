@@ -140,7 +140,10 @@ function FintelyxApp() {
       </main>
 
       {/* 3. Footer */}
-      <Footer onTabChange={(tab) => navigateTo(tab === "home" ? "/" : `/${tab}`)} />
+      <Footer 
+        onTabChange={(tab) => navigateTo(tab === "home" ? "/" : `/${tab}`)} 
+        theme={theme}
+      />
     </div>
   );
 }

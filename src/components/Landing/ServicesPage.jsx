@@ -83,7 +83,7 @@ export default function ServicesPage({ onNavToCalculators }) {
                 </span>
                 <ul style={{ display: "flex", flexWrap: "wrap", gap: "8px", padding: 0, margin: 0, listStyle: "none" }}>
                   {service.bullets.map((bullet, bIdx) => (
-                    <li key={bIdx} style={{ fontSize: "11px", background: "rgba(255,255,255,0.03)", border: "1px solid var(--border-light)", borderRadius: "6px", padding: "4px 8px", color: "var(--text-secondary)" }}>
+                    <li key={bIdx} style={{ fontSize: "11px", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", borderRadius: "6px", padding: "4px 8px", color: "var(--text-secondary)" }}>
                       {bullet}
                     </li>
                   ))}

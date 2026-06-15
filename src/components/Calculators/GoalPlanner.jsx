@@ -301,7 +301,7 @@ export default function GoalPlanner() {
             <div className="milestone-items-grid">
               <div className="milestone-block">
                 <span className="m-year-lbl">Invested Capital</span>
-                <span className="m-val-lbl" style={{ color: "#94a3b8" }}>{fmt(results.invested)}</span>
+                <span className="m-val-lbl" style={{ color: "var(--text-secondary)" }}>{fmt(results.invested)}</span>
                 <span className="m-inv-lbl">Lump sum + monthly inputs</span>
               </div>
               <div className="milestone-block highlight-milestone">

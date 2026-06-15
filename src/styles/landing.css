@@ -18,7 +18,7 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.15;
+  opacity: var(--blob-opacity, 0.15);
   pointer-events: none;
   z-index: 1;
 }
@@ -619,8 +619,8 @@
 
 .hero-dashboard-preview-card:hover {
   border-color: rgba(16, 185, 129, 0.2);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 
-              0 0 50px rgba(16, 185, 129, 0.05);
+  box-shadow: var(--card-shadow-heavy-hover), 
+              0 0 50px rgba(16, 185, 129, var(--blob-opacity, 0.15));
 }
 
 .hero-dashboard-preview-card::after {
@@ -1422,7 +1422,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--border-light);
   padding-top: 16px;
 }
 
@@ -1447,12 +1447,7 @@
 
 /* Skeleton Loading Shimmer */
 .skeleton-pulse {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.03) 25%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.03) 75%
-  );
+  background: var(--skeleton-gradient);
   background-size: 200% 100%;
   animation: shimmerPulse 1.6s infinite;
   border-radius: 8px;

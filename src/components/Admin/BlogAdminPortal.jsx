@@ -139,7 +139,7 @@ export default function BlogAdminPortal({ onClose }) {
               placeholder="Admin Email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              style={{ background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-light)", color: "white", padding: "12px 16px", borderRadius: "8px" }}
+              style={{ background: "var(--input-bg)", border: "1px solid var(--border-light)", color: "var(--text-primary)", padding: "12px 16px", borderRadius: "8px" }}
               required 
             />
             <input 
@@ -147,7 +147,7 @@ export default function BlogAdminPortal({ onClose }) {
               placeholder="Password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={{ background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-light)", color: "white", padding: "12px 16px", borderRadius: "8px" }}
+              style={{ background: "var(--input-bg)", border: "1px solid var(--border-light)", color: "var(--text-primary)", padding: "12px 16px", borderRadius: "8px" }}
               required 
             />
             <button type="submit" className="btn-primary flex-center" style={{ padding: "14px", marginTop: "8px", justifyContent: "center" }} disabled={isLoggingIn}>
@@ -213,7 +213,7 @@ export default function BlogAdminPortal({ onClose }) {
                 value={formData.title} 
                 onChange={handleChange} 
                 placeholder="The Power of Step-Up SIPs"
-                style={{ background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-light)", color: "white", padding: "12px", borderRadius: "8px" }}
+                style={{ background: "var(--input-bg)", border: "1px solid var(--border-light)", color: "var(--text-primary)", padding: "12px", borderRadius: "8px" }}
                 required 
               />
             </div>
@@ -226,7 +226,7 @@ export default function BlogAdminPortal({ onClose }) {
                 value={formData.category} 
                 onChange={handleChange} 
                 placeholder="Compounding Strategy"
-                style={{ background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-light)", color: "white", padding: "12px", borderRadius: "8px" }}
+                style={{ background: "var(--input-bg)", border: "1px solid var(--border-light)", color: "var(--text-primary)", padding: "12px", borderRadius: "8px" }}
               />
             </div>
             
@@ -238,7 +238,7 @@ export default function BlogAdminPortal({ onClose }) {
                 value={formData.readTime} 
                 onChange={handleChange} 
                 placeholder="4 mins read"
-                style={{ background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-light)", color: "white", padding: "12px", borderRadius: "8px" }}
+                style={{ background: "var(--input-bg)", border: "1px solid var(--border-light)", color: "var(--text-primary)", padding: "12px", borderRadius: "8px" }}
               />
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function BlogAdminPortal({ onClose }) {
               onChange={handleChange} 
               placeholder="A brief summary for the feed..."
               rows={2}
-              style={{ background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-light)", color: "white", padding: "12px", borderRadius: "8px", resize: "vertical" }}
+              style={{ background: "var(--input-bg)", border: "1px solid var(--border-light)", color: "var(--text-primary)", padding: "12px", borderRadius: "8px", resize: "vertical" }}
             />
           </div>
 
@@ -263,7 +263,7 @@ export default function BlogAdminPortal({ onClose }) {
               onChange={handleChange} 
               placeholder="Main blog body..."
               rows={12}
-              style={{ background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-light)", color: "white", padding: "12px", borderRadius: "8px", resize: "vertical" }}
+              style={{ background: "var(--input-bg)", border: "1px solid var(--border-light)", color: "var(--text-primary)", padding: "12px", borderRadius: "8px", resize: "vertical" }}
               required
             />
           </div>

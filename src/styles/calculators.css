@@ -32,7 +32,7 @@
 }
 
 .hub-glass-tabs {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--input-bg);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-light);
   padding: 6px;
@@ -61,7 +61,7 @@
 
 .hub-tab:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--btn-secondary-hover);
 }
 
 .hub-tab.active {
@@ -111,8 +111,8 @@
   text-align: center;
   flex-direction: column;
   padding: 40px;
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  border-color: var(--border-light);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .lock-icon {
@@ -306,8 +306,8 @@
 
 /* Locked Card for Free */
 .disabled-card {
-  opacity: 0.65;
-  background: rgba(255, 255, 255, 0.01) !important;
+  opacity: 0.6;
+  background: var(--bg-secondary) !important;
 }
 
 .card-lock-badge {
@@ -331,7 +331,7 @@
    ========================================== */
 
 .breakdown-chart-area {
-  background: rgba(255, 255, 255, 0.01);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-light);
   border-radius: 16px;
   padding: 20px;
@@ -367,7 +367,7 @@
   border-radius: 50px;
   overflow: hidden;
   margin-bottom: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--input-bg);
 }
 
 .invested-segment {
@@ -548,9 +548,10 @@
 }
 
 .segmented-tab.active {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--bg-secondary);
   color: var(--text-primary);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .disabled-tab {
