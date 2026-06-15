@@ -1,4 +1,3 @@
-import React from "react";
 import { ShieldCheck, FileText, Lock, Building } from "lucide-react";
 import "../../styles/landing.css";
 

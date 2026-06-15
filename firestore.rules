@@ -6,7 +6,9 @@ service cloud.firestore {
     // Blogs collection: Anyone can read, but only authenticated admin users can write/modify
     match /blogs/{blogId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if request.auth != null && 
+                    request.auth.token.email != null && 
+                    request.auth.token.email.endsWith('@fintelyxinvestments.com');
     }
     
     // Default fallback: Block all read/write operations on any other collections

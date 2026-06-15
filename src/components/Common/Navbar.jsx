@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Sparkles, Menu, X, Sun, Moon } from "lucide-react";
 
 export default function Navbar({ activeTab, onTabChange, theme, toggleTheme }) {

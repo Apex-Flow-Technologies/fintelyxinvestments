@@ -1,4 +1,3 @@
-import React from "react";
 import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer({ onTabChange }) {

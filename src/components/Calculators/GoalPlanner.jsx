@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Target } from "lucide-react";
 import "../../styles/calculators.css";
 
@@ -38,7 +38,7 @@ export default function GoalPlanner() {
     const fvPrincipal = P * Math.pow(1 + ratePerCycle, totalCycles);
 
     // Compound recurring contributions
-    let fvContributions = 0;
+    let fvContributions;
     if (ratePerCycle > 0) {
       fvContributions = pmtPerCycle * ((Math.pow(1 + ratePerCycle, totalCycles) - 1) / ratePerCycle);
       // If payment is made at the beginning of the period

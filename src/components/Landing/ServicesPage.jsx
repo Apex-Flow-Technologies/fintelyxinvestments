@@ -1,4 +1,3 @@
-import React from "react";
 import { Sparkles, ArrowRight, ShieldCheck, Milestone, BarChart3, Coins, BookOpen, HeartPulse, GraduationCap } from "lucide-react";
 import "../../styles/landing.css";
 

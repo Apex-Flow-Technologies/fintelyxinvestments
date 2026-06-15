@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
 import { AlertCircle } from "lucide-react";
 import "../../styles/calculators.css";
+
+// Register Chart.js structures
+Chart.register(...registerables);
 
 export default function PortfolioBacktester({ theme }) {
   const chartRef = useRef(null);

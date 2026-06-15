@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { ShieldCheck, Users, Landmark, Award, HelpCircle, ArrowLeft, Briefcase, Compass, MessageSquare, CheckCircle2 } from "lucide-react";
 import "../../styles/landing.css";
 

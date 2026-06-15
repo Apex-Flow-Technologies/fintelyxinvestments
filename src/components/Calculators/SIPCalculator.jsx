@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
-import { Sparkles, ArrowUpRight, Download } from "lucide-react";
+import { Sparkles, Download } from "lucide-react";
 import "../../styles/calculators.css";
 
 // Register all Chart.js structures

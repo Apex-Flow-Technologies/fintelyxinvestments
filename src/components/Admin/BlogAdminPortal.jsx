@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { db, auth } from "../../database/firebase";
@@ -26,8 +26,22 @@ export default function BlogAdminPortal({ onClose }) {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        const email = currentUser.email || "";
+        const cleanEmail = email.toLowerCase().trim();
+        const isAdmin = cleanEmail === "wealth@fintelyxinvestments.com" || cleanEmail.endsWith("@fintelyxinvestments.com");
+        
+        if (!isAdmin) {
+          setLoginError("Access denied. Your account is not authorized as an administrator.");
+          await signOut(auth);
+          setUser(null);
+        } else {
+          setUser(currentUser);
+        }
+      } else {
+        setUser(null);
+      }
       setAuthLoading(false);
     });
     return () => unsubscribe();
@@ -41,6 +55,7 @@ export default function BlogAdminPortal({ onClose }) {
       await signInWithEmailAndPassword(auth, email, password);
       // Success, onAuthStateChanged will handle the rest
     } catch (error) {
+      console.error("Authentication failed:", error);
       setLoginError("Invalid credentials. Access denied.");
     } finally {
       setIsLoggingIn(false);

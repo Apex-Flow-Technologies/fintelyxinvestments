@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Sparkles, ArrowRight, ShieldCheck, TrendingUp, Cpu, Landmark } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { ArrowRight, ShieldCheck, TrendingUp, Cpu, Landmark } from "lucide-react";
 import ParticleBackground from "../Common/ParticleBackground";
 import { SOCIAL_FEED_CONFIG } from "../../config/socialFeeds";
 import "../../styles/landing.css";
@@ -17,18 +17,11 @@ const PlayIcon = ({ size = 24, ...props }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 );
 
-const ExternalLinkIcon = ({ size = 14, ...props }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-);
-
-export default function LandingPage({ onNavToCalculators, theme }) {
+export default function LandingPage({ theme }) {
 
   // State variables for interactive mockup
   const [sipSlider, setSipSlider] = useState(35000);
   const [cagrSlider, setCagrSlider] = useState(14.2);
-  const [projectedCorpus, setProjectedCorpus] = useState(0);
-  const [svgPathData, setSvgPathData] = useState("");
-  const [svgEndCoordinate, setSvgEndCoordinate] = useState(60);
 
   // Autopilot Simulation States
   const [isAutopilotActive, setIsAutopilotActive] = useState(true);
@@ -52,36 +45,34 @@ export default function LandingPage({ onNavToCalculators, theme }) {
   }, [cagrSlider]);
 
   // Calculate live projections based on actual current values
-  useEffect(() => {
-    const totalYears = 15;
-    const r = cagrSlider / 100;
-    const monthlyRate = r / 12;
-    const totalMonths = totalYears * 12;
+  const totalYears = 15;
+  const r = cagrSlider / 100;
+  const monthlyRate = r / 12;
+  const totalMonths = totalYears * 12;
 
-    // Calculate final corpus
-    const finalVal = sipSlider * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
-    setProjectedCorpus(finalVal);
+  // Calculate final corpus
+  const projectedCorpus = sipSlider * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
 
-    // Calculate path coordinates
-    const width = 360;
-    const height = 100; // Draw within 10px to 110px vertical range
-    const points = [];
+  // Calculate path coordinates
+  const width = 360;
+  const height = 100; // Draw within 10px to 110px vertical range
+  const points = [];
+  let svgEndCoordinate = 60;
+  
+  for (let yr = 0; yr <= totalYears; yr++) {
+    const m = yr * 12;
+    const val = m === 0 ? 0 : sipSlider * ((Math.pow(1 + monthlyRate, m) - 1) / monthlyRate) * (1 + monthlyRate);
     
-    for (let yr = 0; yr <= totalYears; yr++) {
-      const m = yr * 12;
-      const val = m === 0 ? 0 : sipSlider * ((Math.pow(1 + monthlyRate, m) - 1) / monthlyRate) * (1 + monthlyRate);
-      
-      const x = (yr / totalYears) * width;
-      const y = finalVal === 0 ? height : height - (val / finalVal) * (height - 20) + 10;
-      points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-      
-      if (yr === totalYears) {
-        setSvgEndCoordinate(y);
-      }
+    const x = (yr / totalYears) * width;
+    const y = projectedCorpus === 0 ? height : height - (val / projectedCorpus) * (height - 20) + 10;
+    points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    
+    if (yr === totalYears) {
+      svgEndCoordinate = y;
     }
-    
-    setSvgPathData(`M ${points.join(" L ")}`);
-  }, [sipSlider, cagrSlider]);
+  }
+  
+  const svgPathData = `M ${points.join(" L ")}`;
 
   // Autopilot: Cycle random targets every 4.5 seconds
   useEffect(() => {
@@ -179,7 +170,6 @@ export default function LandingPage({ onNavToCalculators, theme }) {
     pubDate: "Daily Updates"
   });
   const [loadingVideos, setLoadingVideos] = useState(true);
-  const [errorVideos, setErrorVideos] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleEmailClick = (e) => {
@@ -197,7 +187,6 @@ export default function LandingPage({ onNavToCalculators, theme }) {
     const fetchFeeds = async () => {
       try {
         setLoadingVideos(true);
-        setErrorVideos(false);
 
         // 1. Fetch YouTube Feed
         const ytUrl = `${SOCIAL_FEED_CONFIG.rssParserApi}?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${SOCIAL_FEED_CONFIG.youtubeChannelId}`;
@@ -247,9 +236,6 @@ export default function LandingPage({ onNavToCalculators, theme }) {
 
       } catch (err) {
         console.warn("Video feeds fetch failed, using high-fidelity default data:", err);
-        if (isMounted) {
-          setErrorVideos(true);
-        }
       } finally {
         if (isMounted) {
           setLoadingVideos(false);
