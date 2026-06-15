@@ -198,7 +198,7 @@ export default function Navbar({ activeTab, onTabChange, theme, toggleTheme }) {
           {/* Desktop SaaS Portal CTA */}
           <div className="nav-desktop-actions">
             <a
-              href="https://saas.fintelyxinvestments.com"
+              href="https://fintelyxinvestments.my-portfolio.co.in/app/#/login"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary flex-center"
@@ -272,7 +272,7 @@ export default function Navbar({ activeTab, onTabChange, theme, toggleTheme }) {
           </button>
           <div style={{ height: "1px", background: "var(--border-light)", margin: "8px 0" }} />
           <a
-            href="https://saas.fintelyxinvestments.com"
+            href="https://fintelyxinvestments.my-portfolio.co.in/app/#/login"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary flex-center"
