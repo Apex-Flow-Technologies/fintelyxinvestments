@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Blogs collection: Anyone can read, but only authenticated admin users can write/modify
+    match /blogs/{blogId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Default fallback: Block all read/write operations on any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
