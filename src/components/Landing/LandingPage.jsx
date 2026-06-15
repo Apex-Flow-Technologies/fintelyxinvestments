@@ -180,6 +180,17 @@ export default function LandingPage({ onNavToCalculators, theme }) {
   });
   const [loadingVideos, setLoadingVideos] = useState(true);
   const [errorVideos, setErrorVideos] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  const handleEmailClick = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText("wealth@fintelyxinvestments.com");
+    setCopiedEmail(true);
+    setTimeout(() => {
+      setCopiedEmail(false);
+    }, 2500);
+    window.location.href = "mailto:wealth@fintelyxinvestments.com";
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -799,8 +810,13 @@ export default function LandingPage({ onNavToCalculators, theme }) {
             <a href="tel:+919008867475" className="btn-primary" style={{ padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: "700" }}>
               Call Partner: +91 90088 67475
             </a>
-            <a href="mailto:wealth@fintelyxinvestments.com" className="btn-secondary" style={{ padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: "700" }}>
-              Email Support
+            <a 
+              href="mailto:wealth@fintelyxinvestments.com" 
+              onClick={handleEmailClick}
+              className="btn-secondary" 
+              style={{ padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: "700" }}
+            >
+              {copiedEmail ? "Email Copied!" : "Mail us: wealth@fintelyxinvestments.com"}
             </a>
           </div>
         </div>
