@@ -46,8 +46,8 @@
   --skeleton-gradient: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
   
   /* Typography */
-  --font-display: 'Outfit', -apple-system, sans-serif;
-  --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-display: 'Cambria', Georgia, serif;
+  --font-body: 'Cambria', Georgia, serif;
   
   /* Transitions */
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
