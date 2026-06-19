@@ -1,8 +1,8 @@
 import { useState } from "react";
 import SIPCalculator from "./SIPCalculator";
 import GoalPlanner from "./GoalPlanner";
-import PortfolioBacktester from "./PortfolioBacktester";
-import { IndianRupee, Percent, PieChart, Sparkles } from "lucide-react";
+import EMICalculator from "./EMICalculator";
+import { IndianRupee, Percent, CreditCard, Sparkles } from "lucide-react";
 import "../../styles/calculators.css";
 
 export default function CalculatorHub({ theme }) {
@@ -16,7 +16,7 @@ export default function CalculatorHub({ theme }) {
           <Sparkles size={12} /> Fintelyx Wealth Engine
         </span>
         <h2>Interactive Wealth Tools</h2>
-        <p>Project long-term compound growth, configure salary increases, and simulate historical asset weights.</p>
+        <p>Project long-term compound growth, configure salary increases, and simulate EMI schedules.</p>
       </div>
 
       {/* Segmented Tab Switcher */}
@@ -28,7 +28,7 @@ export default function CalculatorHub({ theme }) {
         >
           <option value="sip">SIP Step-Up Calculator</option>
           <option value="goal">Wealth Goal Planner</option>
-          <option value="backtest">Portfolio Backtester</option>
+          <option value="emi">EMI & Loan Calculator</option>
         </select>
 
         <div className="hub-glass-tabs">
@@ -45,10 +45,10 @@ export default function CalculatorHub({ theme }) {
             <IndianRupee size={16} /> Wealth Goal Planner
           </button>
           <button 
-            className={`hub-tab ${activeTab === "backtest" ? "active" : ""}`}
-            onClick={() => setActiveTab("backtest")}
+            className={`hub-tab ${activeTab === "emi" ? "active" : ""}`}
+            onClick={() => setActiveTab("emi")}
           >
-            <PieChart size={16} /> Portfolio Backtester
+            <CreditCard size={16} /> EMI Calculator
           </button>
         </div>
       </div>
@@ -65,9 +65,9 @@ export default function CalculatorHub({ theme }) {
             <GoalPlanner theme={theme} />
           </div>
         )}
-        {activeTab === "backtest" && (
+        {activeTab === "emi" && (
           <div className="animate-fade-in">
-            <PortfolioBacktester theme={theme} />
+            <EMICalculator theme={theme} />
           </div>
         )}
       </div>

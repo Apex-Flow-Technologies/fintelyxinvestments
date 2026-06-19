@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { ArrowRight, ShieldCheck, TrendingUp, Cpu, Landmark } from "lucide-react";
 import ParticleBackground from "../Common/ParticleBackground";
 import { SOCIAL_FEED_CONFIG } from "../../config/socialFeeds";
+import { servicesData } from "../../data/servicesData";
 import "../../styles/landing.css";
 
 // Custom SVG Icons to bypass older lucide-react brand/media missing exports
@@ -27,7 +29,7 @@ export default function LandingPage({ theme }) {
   const [isAutopilotActive, setIsAutopilotActive] = useState(true);
   const [sipTarget, setSipTarget] = useState(35000);
   const [cagrTarget, setCagrTarget] = useState(14.2);
-  
+
   // Ref to hold the idle interaction timer
   const autopilotTimerRef = useRef(null);
 
@@ -58,20 +60,20 @@ export default function LandingPage({ theme }) {
   const height = 100; // Draw within 10px to 110px vertical range
   const points = [];
   let svgEndCoordinate = 60;
-  
+
   for (let yr = 0; yr <= totalYears; yr++) {
     const m = yr * 12;
     const val = m === 0 ? 0 : sipSlider * ((Math.pow(1 + monthlyRate, m) - 1) / monthlyRate) * (1 + monthlyRate);
-    
+
     const x = (yr / totalYears) * width;
     const y = projectedCorpus === 0 ? height : height - (val / projectedCorpus) * (height - 20) + 10;
     points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-    
+
     if (yr === totalYears) {
       svgEndCoordinate = y;
     }
   }
-  
+
   const svgPathData = `M ${points.join(" L ")}`;
 
   // Autopilot: Cycle random targets every 4.5 seconds
@@ -171,6 +173,7 @@ export default function LandingPage({ theme }) {
   });
   const [loadingVideos, setLoadingVideos] = useState(true);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
 
   const handleEmailClick = (e) => {
     e.preventDefault();
@@ -192,11 +195,11 @@ export default function LandingPage({ theme }) {
         const ytUrl = `${SOCIAL_FEED_CONFIG.rssParserApi}?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${SOCIAL_FEED_CONFIG.youtubeChannelId}`;
         const ytRes = await fetch(ytUrl);
         const ytData = await ytRes.json();
-        
+
         if (isMounted && ytData.status === "ok" && ytData.items && ytData.items.length > 0) {
           const latestYt = ytData.items[0];
           let videoId = "";
-          
+
           if (latestYt.guid) {
             const parts = latestYt.guid.split(":");
             videoId = parts[parts.length - 1];
@@ -206,8 +209,8 @@ export default function LandingPage({ theme }) {
           }
 
           // Use medium quality thumbnail for fast load, standard fallback to high resolution
-          const thumbnail = videoId 
-            ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` 
+          const thumbnail = videoId
+            ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
             : latestYt.thumbnail;
 
           setYtVideo({
@@ -259,27 +262,27 @@ export default function LandingPage({ theme }) {
 
   return (
     <div className="landing-viewport animate-fade-in">
-      
+
       {/* 1. HERO SECTION */}
-      <section className="hero-section flex-center" style={{ 
+      <section className="hero-section flex-center" style={{
         position: "relative",
-        minHeight: "60vh", 
+        minHeight: "60vh",
         width: "100%",
         overflow: "hidden"
       }}>
-        
+
         <ParticleBackground />
 
         <div className="hero-glowing-blob blob-1"></div>
         <div className="hero-glowing-blob blob-2"></div>
-        
+
         <div className="hero-content-container">
           <div className="hero-flex-wrapper">
-            
+
             {/* Left Column: Legacy Typography & Reviews */}
             <div style={{ textAlign: "left" }}>
               {/* Trust Badge */}
-              <div className="hero-trust-badge glass-card flex-center" style={{ 
+              <div className="hero-trust-badge glass-card flex-center" style={{
                 background: theme === "light" ? "rgba(15, 23, 42, 0.04)" : "rgba(255, 255, 255, 0.02)",
                 border: theme === "light" ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(255, 255, 255, 0.05)"
               }}>
@@ -301,7 +304,7 @@ export default function LandingPage({ theme }) {
               <p className="hero-subtitle">
                 Fintelyx Investments partners with clients to bridge knowledge, discipline, and strategy. Our awareness-led approach enables thoughtful investing, intelligent protection, and long-term financial progress.
               </p>
-              
+
               <div className="hero-actions">
                 <button className="btn-primary" onClick={() => {
                   const el = document.getElementById("about-section");
@@ -315,7 +318,7 @@ export default function LandingPage({ theme }) {
             {/* Right Column: Live Interactive Forecast Card */}
             <div className="animate-float" style={{ width: "100%", display: "flex", justifyContent: "center", zIndex: 10 }}>
               <div className="hero-dashboard-preview-card">
-                
+
                 {/* Header Row with Autopilot indicator */}
                 <div className="preview-card-header">
                   <div className="preview-card-header-left">
@@ -357,10 +360,10 @@ export default function LandingPage({ theme }) {
                 </div>
 
                 {/* SVG Mini Interactive Chart Block */}
-                <div style={{ 
-                  position: "relative", 
-                  width: "100%", 
-                  height: "115px", 
+                <div style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "115px",
                   background: theme === "light" ? "rgba(15, 23, 42, 0.04)" : "rgba(0, 0, 0, 0.25)",
                   borderRadius: "16px",
                   border: theme === "light" ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(255, 255, 255, 0.04)",
@@ -373,7 +376,7 @@ export default function LandingPage({ theme }) {
                   <div style={{ position: "absolute", top: "25%", left: 0, right: 0, height: "1px", background: theme === "light" ? "rgba(15, 23, 42, 0.03)" : "rgba(255, 255, 255, 0.02)" }}></div>
                   <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: "1px", background: theme === "light" ? "rgba(15, 23, 42, 0.03)" : "rgba(255, 255, 255, 0.02)" }}></div>
                   <div style={{ position: "absolute", top: "75%", left: 0, right: 0, height: "1px", background: theme === "light" ? "rgba(15, 23, 42, 0.03)" : "rgba(255, 255, 255, 0.02)" }}></div>
-                  
+
                   {/* Dynamic SVG Compound Growth Vector */}
                   <svg width="100%" height="100%" viewBox="0 0 360 120" style={{ overflow: "visible" }}>
                     <defs>
@@ -382,7 +385,7 @@ export default function LandingPage({ theme }) {
                         <stop offset="100%" stopColor="var(--accent-green)" stopOpacity="0" />
                       </linearGradient>
                     </defs>
-                    
+
                     {/* Shadow underneath the line */}
                     {svgPathData && (
                       <path
@@ -390,7 +393,7 @@ export default function LandingPage({ theme }) {
                         fill="url(#chartGradient)"
                       />
                     )}
-                    
+
                     {/* High-resolution vector glow lines (multiple paths with decreasing opacity) */}
                     {svgPathData && (
                       <path
@@ -424,7 +427,7 @@ export default function LandingPage({ theme }) {
                         strokeLinejoin="round"
                       />
                     )}
-                    
+
                     {/* End terminal node indicator vector glow layers */}
                     <circle
                       cx="360"
@@ -442,7 +445,7 @@ export default function LandingPage({ theme }) {
                       strokeWidth="2"
                     />
                   </svg>
-                  
+
                   {/* Custom coordinates tracker tag */}
                   <div style={{
                     position: "absolute",
@@ -596,53 +599,20 @@ export default function LandingPage({ theme }) {
           </div>
 
           <div className="solutions-grid">
-            {/* Solution 1 */}
-            <div className="glass-card feature-card">
-              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
-                <span className="dot dot-gain"></span> Registered Mutual Funds
-              </h4>
-              <p>Registered mutual fund distribution, systematic onboarding, and systematic investment plan (SIP) mapping.</p>
-            </div>
-
-            {/* Solution 2 */}
-            <div className="glass-card feature-card">
-              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
-                <span className="dot dot-gain"></span> Specialised Funds
-              </h4>
-              <p>Curated access to focused equity, debt, and hybrid strategies tailored to your risk profile.</p>
-            </div>
-
-            {/* Solution 3 */}
-            <div className="glass-card feature-card">
-              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
-                <span className="dot dot-gain"></span> PMS Introductions
-              </h4>
-              <p>Introductions to top PMS managers aligned to your long-term wealth growth goals.</p>
-            </div>
-
-            {/* Solution 4 */}
-            <div className="glass-card feature-card">
-              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
-                <span className="dot dot-gain"></span> AIF Access
-              </h4>
-              <p>Access to private equity, venture capital, long-short strategies, and structured credit solutions.</p>
-            </div>
-
-            {/* Solution 5 */}
-            <div className="glass-card feature-card">
-              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
-                <span className="dot dot-gain"></span> Retirement & Wealth Security
-              </h4>
-              <p>Comprehensive retirement planning, cashflow scheduling, and complementary protection/insurance solutions.</p>
-            </div>
-
-            {/* Solution 6 */}
-            <div className="glass-card feature-card">
-              <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontWeight: "700" }}>
-                <span className="dot dot-gain"></span> Future Education Funding
-              </h4>
-              <p>Future-ready child education funding plans to cover collegiate and higher academic milestones.</p>
-            </div>
+            {servicesData.slice(0, 6).map((service, idx) => (
+              <div
+                key={idx}
+                className="glass-card feature-card"
+                onClick={() => setSelectedService(service)}
+                style={{ cursor: "pointer" }}
+              >
+                <h4 style={{ fontSize: "18px", color: "var(--text-primary)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "10px", fontWeight: "700" }}>
+                  <div style={{ transform: "scale(0.8)", display: "flex" }}>{service.icon}</div>
+                  {service.title}
+                </h4>
+                <p>{service.shortDesc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -688,7 +658,7 @@ export default function LandingPage({ theme }) {
             <div className="workflow-card">
               <div className="workflow-number">04</div>
               <div className="workflow-content">
-                <h3>Ongoing Support</h3>
+                <h3>Long Term Partnership</h3>
                 <p>Reviews, adjustments, and continuous guidance.</p>
               </div>
             </div>
@@ -796,10 +766,10 @@ export default function LandingPage({ theme }) {
             <a href="tel:+919008867475" className="btn-primary" style={{ padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: "700" }}>
               Call Partner: +91 90088 67475
             </a>
-            <a 
-              href="mailto:wealth@fintelyxinvestments.com" 
+            <a
+              href="mailto:wealth@fintelyxinvestments.com"
               onClick={handleEmailClick}
-              className="btn-secondary" 
+              className="btn-secondary"
               style={{ padding: "14px 28px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: "700" }}
             >
               {copiedEmail ? "Email Copied!" : "Mail us: wealth@fintelyxinvestments.com"}
@@ -829,6 +799,36 @@ export default function LandingPage({ theme }) {
       </section>
 
 
+      {/* 7. SERVICE DETAILS MODAL */}
+      {selectedService && createPortal(
+        <div className="modal-overlay" onClick={() => setSelectedService(null)} style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", zIndex: 99999, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+          <div className="glass-card animate-fade-in" onClick={e => e.stopPropagation()} style={{ maxWidth: "600px", width: "100%", padding: "40px", position: "relative", textAlign: "left", background: "var(--bg-secondary)", border: "1px solid var(--border-light)", boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}>
+            <button onClick={() => setSelectedService(null)} style={{ position: "absolute", top: "20px", right: "20px", background: "transparent", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: "28px", display: "flex", alignItems: "center", justifyContent: "center", width: "32px", height: "32px", borderRadius: "50%" }}>&times;</button>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px" }}>
+              <div className="flex-center" style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981", width: "56px", height: "56px", borderRadius: "12px", flexShrink: 0 }}>
+                {selectedService.icon}
+              </div>
+              <h3 style={{ fontSize: "24px", fontWeight: "700", margin: 0, color: "var(--text-primary)" }}>{selectedService.title}</h3>
+            </div>
+            <p style={{ fontSize: "15px", color: "var(--text-secondary)", lineHeight: "1.7", marginBottom: "24px" }}>
+              {selectedService.desc}
+            </p>
+            <div>
+              <span style={{ fontSize: "12px", fontWeight: "700", textTransform: "uppercase", color: "var(--accent-cyan)", letterSpacing: "0.05em", display: "block", marginBottom: "12px" }}>
+                Key Highlights
+              </span>
+              <ul style={{ display: "flex", flexWrap: "wrap", gap: "8px", padding: 0, margin: 0, listStyle: "none" }}>
+                {selectedService.bullets.map((bullet, bIdx) => (
+                  <li key={bIdx} style={{ fontSize: "12px", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", borderRadius: "6px", padding: "6px 12px", color: "var(--text-secondary)" }}>
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

@@ -1,6 +1,107 @@
 import { useState } from "react";
-import { Target } from "lucide-react";
+import { Target, Download, Landmark } from "lucide-react";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import fintelyxLogo from "../../assets/Fintelyx_Logo_Trimmed.png";
 import "../../styles/calculators.css";
+
+// Reusable Print Template internal to Goal Planner
+const GoalPDFTemplate = ({ initialCapital, monthlySaving, rate, years, adjustInflation, inflationRate, compoundFreq, results, isPreview }) => {
+  const fmt = (v) => "₹" + Math.round(v).toLocaleString("en-IN");
+  const today = new Date().toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" });
+  
+  const freqMap = { 12: "Monthly", 4: "Quarterly", 1: "Annually" };
+
+  return (
+    <div 
+      id="goal-pdf-template"
+      style={{
+        position: isPreview ? "relative" : "absolute",
+        left: isPreview ? "0" : "-9999px",
+        top: 0,
+        width: "794px",
+        height: "1123px",
+        backgroundColor: "#ffffff",
+        color: "#0f172a",
+        padding: "40px",
+        fontFamily: "'Inter', sans-serif",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        zIndex: isPreview ? 1 : -9999
+      }}
+    >
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid #10b981", paddingBottom: "20px", marginBottom: "30px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <img src={fintelyxLogo} alt="Fintelyx Logo" style={{ height: "40px", objectFit: "contain" }} />
+          <div>
+            <h1 style={{ margin: 0, fontSize: "24px", fontWeight: "800", color: "#0f172a", letterSpacing: "-0.5px" }}>Fintelyx Investments</h1>
+            <p style={{ margin: 0, fontSize: "12px", color: "#64748b", fontWeight: "600", textTransform: "uppercase" }}>Strategic Wealth Goal Projection</p>
+          </div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Date Generated</p>
+          <p style={{ margin: 0, fontSize: "14px", color: "#0f172a", fontWeight: "600" }}>{today}</p>
+        </div>
+      </div>
+
+      <div style={{ textAlign: "center", marginBottom: "40px" }}>
+        <h2 style={{ fontSize: "28px", margin: "0 0 20px 0", color: "#0f172a" }}>Wealth Goal Planner Report</h2>
+        <div style={{ display: "flex", justifyContent: "space-between", background: "#f8fafc", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0", flexWrap: "wrap", gap: "16px" }}>
+          <div style={{ minWidth: "120px" }}>
+            <p style={{ margin: 0, fontSize: "12px", color: "#64748b", textTransform: "uppercase", fontWeight: "600" }}>Initial Capital</p>
+            <p style={{ margin: "4px 0 0 0", fontSize: "18px", color: "#0f172a", fontWeight: "700" }}>{fmt(initialCapital)}</p>
+          </div>
+          <div style={{ minWidth: "120px" }}>
+            <p style={{ margin: 0, fontSize: "12px", color: "#64748b", textTransform: "uppercase", fontWeight: "600" }}>Monthly Saving</p>
+            <p style={{ margin: "4px 0 0 0", fontSize: "18px", color: "#0f172a", fontWeight: "700" }}>{fmt(monthlySaving)}</p>
+          </div>
+          <div style={{ minWidth: "120px" }}>
+            <p style={{ margin: 0, fontSize: "12px", color: "#64748b", textTransform: "uppercase", fontWeight: "600" }}>Expected Return</p>
+            <p style={{ margin: "4px 0 0 0", fontSize: "18px", color: "#0f172a", fontWeight: "700" }}>{rate}% p.a.</p>
+          </div>
+          <div style={{ minWidth: "120px" }}>
+            <p style={{ margin: 0, fontSize: "12px", color: "#64748b", textTransform: "uppercase", fontWeight: "600" }}>Duration</p>
+            <p style={{ margin: "4px 0 0 0", fontSize: "18px", color: "#0f172a", fontWeight: "700" }}>{years} Years</p>
+          </div>
+          <div style={{ minWidth: "120px" }}>
+            <p style={{ margin: 0, fontSize: "12px", color: "#64748b", textTransform: "uppercase", fontWeight: "600" }}>Compounding</p>
+            <p style={{ margin: "4px 0 0 0", fontSize: "18px", color: "#0f172a", fontWeight: "700" }}>{freqMap[compoundFreq]}</p>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ background: "#0f172a", color: "white", padding: "30px", borderRadius: "16px", textAlign: "center", marginBottom: "40px" }}>
+        <p style={{ margin: 0, fontSize: "14px", color: "#94a3b8", textTransform: "uppercase", fontWeight: "600", letterSpacing: "1px" }}>Estimated Target Corpus</p>
+        <h1 style={{ margin: "10px 0", fontSize: "48px", color: "#10b981", fontWeight: "800" }}>{fmt(results.nominal)}</h1>
+        {adjustInflation && (
+          <div style={{ marginTop: "12px", display: "inline-block", padding: "8px 16px", background: "rgba(239, 68, 68, 0.1)", borderRadius: "8px" }}>
+            <span style={{ fontSize: "12px", color: "#f87171" }}>PURCHASING POWER IN TODAY'S MONEY ({inflationRate}% INFLATION): </span>
+            <strong style={{ fontSize: "16px", color: "#f87171", marginLeft: "6px" }}>{fmt(results.real)}</strong>
+          </div>
+        )}
+        <div style={{ display: "flex", justifyContent: "center", gap: "40px", marginTop: "20px", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "20px" }}>
+          <div>
+            <p style={{ margin: 0, fontSize: "12px", color: "#94a3b8" }}>Total Invested Capital</p>
+            <p style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>{fmt(results.invested)}</p>
+          </div>
+          <div>
+            <p style={{ margin: 0, fontSize: "12px", color: "#94a3b8" }}>Est. Compound Gains</p>
+            <p style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>{fmt(results.earnings)}</p>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: "auto", borderTop: "1px solid #e2e8f0", paddingTop: "20px" }}>
+        <p style={{ margin: "0 0 10px 0", fontSize: "10px", color: "#94a3b8", lineHeight: "1.6" }}>
+          <strong>Statutory Disclaimer:</strong> Fintelyx Investment Services LLP (LLPIN: ACP-0306). 
+          Mutual fund investments are subject to market risks, read all scheme-related documents carefully. The projections shown above are based on assumed rates of return and do not guarantee future performance.
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default function GoalPlanner() {
   // Input states
@@ -65,6 +166,33 @@ export default function GoalPlanner() {
   };
 
   const results = calculateCompound();
+
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+
+  const handlePreviewPDF = () => {
+    setShowPreview(true);
+  };
+
+  const handleDownloadPDF = async () => {
+    setIsDownloading(true);
+    const element = document.getElementById("goal-pdf-template");
+    if (!element) return setIsDownloading(false);
+
+    try {
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff", windowWidth: 794, windowHeight: 1123 });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: [794, 1123] });
+      pdf.addImage(imgData, "PNG", 0, 0, 794, 1123);
+      pdf.save(`Fintelyx_Goal_Report_${new Date().toISOString().split("T")[0]}.pdf`);
+    } catch (err) {
+      console.error(err);
+      alert("Error generating PDF.");
+    } finally {
+      setIsDownloading(false);
+      setShowPreview(false);
+    }
+  };
 
   return (
     <div className="calc-container">
@@ -310,11 +438,45 @@ export default function GoalPlanner() {
                 <span className="m-inv-lbl">Pure compound growth</span>
               </div>
             </div>
+            
+            <div className="premium-report-download" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "20px", marginTop: "16px", display: "flex", justifyContent: "flex-end" }}>
+              <button className="btn-primary" onClick={handlePreviewPDF} style={{ padding: "10px 20px", fontSize: "14px", opacity: isDownloading ? 0.7 : 1 }} disabled={isDownloading}>
+                <Download size={16} /> Preview & Download PDF Report
+              </button>
+            </div>
           </div>
 
         </div>
 
       </div>
+
+      <div style={{ position: "absolute", top: 0, left: 0, zIndex: -9999, pointerEvents: "none" }}>
+        <GoalPDFTemplate initialCapital={initialCapital} monthlySaving={monthlySaving} rate={rate} years={years} adjustInflation={adjustInflation} inflationRate={inflationRate} compoundFreq={compoundFreq} results={results} isPreview={false} />
+      </div>
+
+      {showPreview && (
+        <div className="modal-overlay" style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.8)", zIndex: 99999, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="glass-card animate-fade-in" style={{ padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", maxHeight: "95vh", overflow: "hidden", background: "var(--bg-secondary)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: "16px", alignItems: "center" }}>
+              <h2 style={{ margin: 0, fontSize: "20px", color: "var(--text-primary)" }}>PDF Preview</h2>
+              <button onClick={() => setShowPreview(false)} style={{ background: "transparent", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: "24px" }}>&times;</button>
+            </div>
+            
+            <div style={{ width: "357px", height: "505px", overflow: "hidden", position: "relative", border: "1px solid var(--border-light)", borderRadius: "8px", background: "#fff" }}>
+              <div style={{ transform: "scale(0.45)", transformOrigin: "top left", width: "794px", height: "1123px" }}>
+                <GoalPDFTemplate initialCapital={initialCapital} monthlySaving={monthlySaving} rate={rate} years={years} adjustInflation={adjustInflation} inflationRate={inflationRate} compoundFreq={compoundFreq} results={results} isPreview={true} />
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "12px", marginTop: "20px", width: "100%", justifyContent: "flex-end" }}>
+              <button className="btn-secondary" onClick={() => setShowPreview(false)}>Cancel</button>
+              <button className="btn-primary" onClick={handleDownloadPDF} disabled={isDownloading}>
+                {isDownloading ? "Generating..." : "Confirm & Download"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

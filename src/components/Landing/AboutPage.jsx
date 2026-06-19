@@ -53,23 +53,59 @@ const partners = [
     initial: "S",
     name: "Sundhar",
     role: "PARTNER",
-    department: "PORTFOLIO SYSTEMATICS",
-    desc: "Sundhar coordinates mutual fund systematic allocations, maps long-term compounding projection strategies, and manages capital market research activities to ensure seamless client portal integrations.",
+    department: "MEDIA & DIGITAL MARKETING",
+    desc: "Sundhar spearheads Fintelyx's digital presence, overseeing all media relations, content strategy, and digital marketing initiatives to ensure clear and engaging communication of our wealth strategies.",
     img: "",
-    experience: "Quantitative Capital Markets Researcher & Systems Engineer",
-    philosophy: "Using data-driven systematics and high-fidelity projection tools allows investors to visualize their financial futures with absolute mathematical clarity.",
+    experience: "Digital Marketing Strategist & Media Communications Lead",
+    philosophy: "Financial literacy must be accessible. Effective digital communication and engaging media strategies bridge the gap between complex investment concepts and the everyday investor.",
     credentials: [
-      "Capital Market Research Specialist",
-      "Portfolio Analytics Systems Architect",
+      "Digital Marketing Expert",
+      "Strategic Communications Lead",
       "Designated Partner of Fintelyx Investments"
     ],
     expertise: [
-      "Mutual Fund Systematic Allocations",
-      "CAGR Projection Modeling",
-      "Client Portal & API Integration",
-      "Capital Markets Historical Analysis"
+      "Digital Media Strategy",
+      "Brand & Content Marketing",
+      "Client Outreach & Engagement",
+      "Financial Communications"
     ],
     whatsapp: "https://wa.me/919008867475"
+  },
+  {
+    id: "coming-soon-1",
+    initial: "?",
+    name: "Partner Details TBA",
+    role: "JOINING SOON",
+    department: "LEADERSHIP DESK",
+    desc: "We are actively expanding our leadership board to bring more specialized expertise to our clients. Stay tuned for an official announcement.",
+    img: "",
+    experience: "Details will be updated upon official onboarding",
+    philosophy: "Fintelyx is committed to assembling a diverse board of industry experts to ensure comprehensive financial advisory.",
+    credentials: [
+      "Credentials update pending"
+    ],
+    expertise: [
+      "Expertise update pending"
+    ],
+    whatsapp: "#"
+  },
+  {
+    id: "coming-soon-2",
+    initial: "?",
+    name: "Partner Details TBA",
+    role: "JOINING SOON",
+    department: "LEADERSHIP DESK",
+    desc: "We are actively expanding our leadership board to bring more specialized expertise to our clients. Stay tuned for an official announcement.",
+    img: "",
+    experience: "Details will be updated upon official onboarding",
+    philosophy: "Fintelyx is committed to assembling a diverse board of industry experts to ensure comprehensive financial advisory.",
+    credentials: [
+      "Credentials update pending"
+    ],
+    expertise: [
+      "Expertise update pending"
+    ],
+    whatsapp: "#"
   }
 ];
 
@@ -224,20 +260,9 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
             
             {/* Left Col: Mission Statement */}
             <div>
-              <span className="badge-glow-cyan" style={{ marginBottom: "16px", display: "inline-block" }}>OUR VISION</span>
-              <h3 style={{ fontSize: "28px", color: "var(--text-primary)", marginBottom: "20px", fontFamily: "var(--font-display)", lineHeight: "1.3" }}>
-                Democratizing Compound Interest Projections
-              </h3>
-              <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "20px" }}>
-                At <strong>Fintelyx Investment Services LLP</strong> (LLPIN: <strong>ACP-0306</strong>), we believe wealth accumulation is a science 
-                driven by time, discipline, and consistent compounding. Founded on <strong>June 11, 2025</strong>, and registered under 
-                the Registrar of Companies (RoC), Chennai, our organization was built to bridge the gap between complex 
-                compounding mathematics and day-to-day personal investment.
-              </p>
-              <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: "1.8" }}>
-                As an <strong>AMFI Registered Mutual Fund Distributor (ARN-345579)</strong>, we help clients systematically navigate 
-                the mutual fund landscape. We combine high-end dark analytics projection tools with compliance-grade 
-                integrity to deliver a premium wealth distributions desk.
+              <span className="badge-glow-green" style={{ marginBottom: "20px", display: "inline-block", textTransform: "uppercase", fontSize: "14px", fontWeight: "800", padding: "6px 16px" }}>WHO WE ARE</span>
+              <p style={{ fontSize: "16px", color: "var(--text-secondary)", lineHeight: "1.8" }}>
+                At Fintelyx Investments, we go beyond traditional financial advisory—we build long-term partnerships that evolve with your life, your business, and your aspirations. Our mission is simple yet powerful: to empower individuals, families, and enterprises with intelligent, curated investment and protection solutions that deliver meaningful financial outcomes. We combine deep listening with data-led insights to understand what truly matters to you.
               </p>
             </div>
 
@@ -272,7 +297,7 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
         {/* 3. LLP Designated Partners Team Grid (Matching screenshot formatting) */}
         <div className="section-title-wrapper text-center">
           <span className="badge-glow-green"><Users size={12} /> LLP Board</span>
-          <h3 style={{ fontSize: "28px", color: "var(--text-primary)", marginTop: "8px" }}>Leadership Partners</h3>
+          <h3 style={{ fontSize: "28px", color: "var(--text-primary)", marginTop: "8px" }}>Our Team</h3>
           <p style={{ color: "var(--text-secondary)" }}>Directing the corporate affairs and distribution standards of Fintelyx. Click on any partner to view their full profile.</p>
         </div>
 

@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
 import { Sparkles, Download } from "lucide-react";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import PDFReportTemplate from "./PDFReportTemplate";
 import "../../styles/calculators.css";
 
 // Register all Chart.js structures
@@ -168,9 +171,53 @@ export default function SIPCalculator({ theme }) {
     };
   }, [sip, stepup, years, theme]);
 
-  // Mock PDF Wealth report downloads
-  const handleDownloadPDF = () => {
-    window.print();
+  // Generate and Download PDF Report
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [chartImgStr, setChartImgStr] = useState(null);
+
+  const handlePreviewPDF = () => {
+    if (canvasRef.current) {
+      // Capture the current chart as an image to embed in the PDF
+      setChartImgStr(canvasRef.current.toDataURL("image/png"));
+    }
+    setShowPreview(true);
+  };
+
+  const handleDownloadPDF = async () => {
+    setIsDownloading(true);
+    const element = document.getElementById("pdf-report-template");
+    if (!element) {
+      setIsDownloading(false);
+      return;
+    }
+
+    try {
+      // html2canvas works best when it can "see" the element
+      const canvas = await html2canvas(element, {
+        scale: 2, // High resolution
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+        windowWidth: 794,
+        windowHeight: 1123
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [794, 1123]
+      });
+
+      pdf.addImage(imgData, "PNG", 0, 0, 794, 1123);
+      pdf.save(`Fintelyx_Wealth_Report_${new Date().toISOString().split("T")[0]}.pdf`);
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+      alert("There was an error generating your PDF report. Please try again.");
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -345,8 +392,13 @@ export default function SIPCalculator({ theme }) {
 
             {/* Premium action to download report */}
             <div className="premium-report-download" style={{ borderTop: "1px solid var(--border-light)", paddingTop: "20px", marginTop: "16px", display: "flex", justifyContent: "flex-end" }}>
-              <button className="btn-primary" onClick={handleDownloadPDF} style={{ padding: "10px 20px", fontSize: "14px" }}>
-                <Download size={16} /> Download PDF Wealth Report
+              <button 
+                className="btn-primary" 
+                onClick={handlePreviewPDF} 
+                style={{ padding: "10px 20px", fontSize: "14px", opacity: isDownloading ? 0.7 : 1 }}
+                disabled={isDownloading}
+              >
+                <Download size={16} /> {isDownloading ? "Generating Report..." : "Preview & Download PDF Report"}
               </button>
             </div>
           </div>
@@ -404,6 +456,77 @@ export default function SIPCalculator({ theme }) {
         </div>
 
       </div>
+      
+      {/* Hidden PDF Template rendered for html2canvas */}
+      <div style={{ position: "absolute", top: 0, left: 0, zIndex: -9999, pointerEvents: "none" }}>
+        <PDFReportTemplate 
+          sip={sip}
+          stepup={stepup}
+          years={years}
+          activeRate={activeRate}
+          mainResults={mainResults}
+          milestone10={milestone10}
+          milestone20={milestone20}
+          milestone30={milestone30}
+          chartImg={chartImgStr}
+          isPreview={false}
+        />
+      </div>
+
+      {/* Print Preview Modal */}
+      {showPreview && (
+        <div className="modal-overlay" style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.8)", zIndex: 99999, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="glass-card animate-fade-in" style={{ padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", maxHeight: "95vh", overflow: "hidden", background: "var(--bg-secondary)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: "16px", alignItems: "center" }}>
+              <h2 style={{ margin: 0, fontSize: "20px", color: "var(--text-primary)" }}>PDF Preview</h2>
+              <button onClick={() => setShowPreview(false)} style={{ background: "transparent", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: "24px" }}>&times;</button>
+            </div>
+            
+            {/* Scaled-down PDF Preview Container */}
+            <div style={{ 
+              width: "357px",
+              height: "505px",
+              overflow: "hidden", 
+              position: "relative",
+              border: "1px solid var(--border-light)",
+              borderRadius: "8px",
+              background: "#fff"
+            }}>
+              <div style={{ 
+                transform: "scale(0.45)", 
+                transformOrigin: "top left",
+                width: "794px",
+                height: "1123px"
+              }}>
+                <PDFReportTemplate 
+                  sip={sip}
+                  stepup={stepup}
+                  years={years}
+                  activeRate={activeRate}
+                  mainResults={mainResults}
+                  milestone10={milestone10}
+                  milestone20={milestone20}
+                  milestone30={milestone30}
+                  chartImg={chartImgStr}
+                  isPreview={true}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "12px", marginTop: "20px", width: "100%", justifyContent: "flex-end" }}>
+              <button className="btn-secondary" onClick={() => setShowPreview(false)}>Cancel</button>
+              <button 
+                className="btn-primary" 
+                onClick={handleDownloadPDF}
+                disabled={isDownloading}
+              >
+                {isDownloading ? "Generating..." : "Confirm & Download"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
