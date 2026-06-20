@@ -4,44 +4,44 @@ import { Milestone, BarChart3, Coins, BookOpen, ShieldCheck, GraduationCap, Hear
 export const servicesData = [
   {
     title: "Mutual Funds",
-    shortDesc: "Registered mutual fund distribution, systematic onboarding, and systematic investment plan (SIP) mapping.",
+    shortDesc: "Professionally managed and diversified investment solutions designed to help investors achieve their long-term financial goals.",
     icon: <Coins size={26} style={{ color: "var(--accent-green)", filter: "drop-shadow(0 0 8px var(--accent-green-glow))", margin: 0 }} />,
-    desc: "At Fintelyx Investments, we believe that wealth creation should be simple, transparent, and truly aligned with your financial goals. Mutual Funds are one of the most effective ways to build long-term prosperity—offering diversification, professional fund management, and the potential for superior returns.",
+    desc: "Mutual Funds provide professionally managed and diversified investment solutions designed to help investors achieve their long-term financial goals. By pooling assets from various participants, they offer access to structured equities, fixed income, and specialized growth sectors.",
     bullets: ["Diversification", "Expert Management", "Flexible Options", "Highly Affordable", "Liquidity", "Regulated & Transparent"]
   },
   {
-    title: "Specialised Investment Funds (SIF)",
-    shortDesc: "Curated access to focused equity, debt, and hybrid strategies tailored to your risk profile.",
+    title: "Specialized Investment Funds (SIF)",
+    shortDesc: "Advanced investment strategies that bridge the gap between traditional mutual funds and bespoke portfolio solutions for sophisticated investors.",
     icon: <BarChart3 size={26} style={{ color: "var(--accent-green)", filter: "drop-shadow(0 0 8px var(--accent-green-glow))", margin: 0 }} />,
-    desc: "We understand that sophisticated investors require more than standard market solutions. Specialised Investment Funds (SIF) (SIFs) offer access to high-potential opportunities that go beyond traditional instruments designed for those who seek strategic diversification, enhanced growth, and long-term value creation.",
+    desc: "Specialized Investment Funds (SIF) offer advanced investment strategies that bridge the gap between traditional mutual funds and bespoke portfolio solutions for sophisticated investors. They focus on targeted market themes, high-conviction portfolios, and tailored exposure parameters.",
     bullets: ["Research-backed recommendations", "Access to best-in-class fund managers", "Transparent, unbiased guidance", "Long-term partnership approach", "Tailored portfolio structuring"]
   },
   {
     title: "Portfolio Management Services (PMS)",
-    shortDesc: "Introductions to top PMS managers aligned to your long-term wealth growth goals.",
+    shortDesc: "Customized portfolio management tailored to your financial objectives, with dedicated oversight from experienced investment professionals.",
     icon: <BookOpen size={26} style={{ color: "var(--accent-green)", filter: "drop-shadow(0 0 8px var(--accent-green-glow))", margin: 0 }} />,
-    desc: "We recognize that successful wealth creation requires more than standard investment products—it demands precision, strategy, and dedicated expertise. Portfolio Management Services (PMS) are designed for investors who want a highly customized, actively managed investment portfolio.",
+    desc: "Portfolio Management Services (PMS) deliver customized portfolio management tailored to your financial objectives, with dedicated oversight from experienced investment professionals. This specialized service provides enhanced control, active management, and strategic asset allocation for substantial portfolios.",
     bullets: ["Custom-Built Portfolios", "Active, Strategic Management", "Better Transparency & Control", "Designed for Long-Term Growth", "Ideal for HNIs & Serious Investors"]
   },
   {
     title: "Alternative Investment Funds (AIF)",
-    shortDesc: "Access to private equity, venture capital, long-short strategies, and structured credit solutions.",
+    shortDesc: "Access exclusive investment opportunities beyond traditional asset classes through professionally managed alternative investment strategies.",
     icon: <Milestone size={26} style={{ color: "var(--accent-green)", filter: "drop-shadow(0 0 8px var(--accent-green-glow))", margin: 0 }} />,
-    desc: "We offer access to Alternative Investment Funds (AIFs)—a powerful gateway for investors seeking high-growth, high-quality opportunities beyond traditional investment products. AIFs are crafted for those who demand deeper diversification, strategic exposure, and institutional-grade practices.",
+    desc: "Alternative Investment Funds (AIF) unlock access to exclusive investment opportunities beyond traditional asset classes through professionally managed alternative investment strategies. AIFs target specialized vehicles like venture capital, private equity, structured credit, and long-short strategies.",
     bullets: ["High-Conviction Opportunities", "Advanced Portfolio Diversification", "Professional, High-Expertise Management", "Enhanced Return Potential", "Ideal for High-Net-Worth Investors"]
   },
   {
     title: "Retirement Planning",
-    shortDesc: "Comprehensive retirement planning, cashflow scheduling, and complementary protection/insurance solutions.",
+    shortDesc: "A personalized retirement strategy designed to help you enjoy financial freedom in your golden years.",
     icon: <ShieldCheck size={26} style={{ color: "var(--accent-green)", filter: "drop-shadow(0 0 8px var(--accent-green-glow))", margin: 0 }} />,
-    desc: "Retirement Planning helps you build a secure and comfortable life after work. We design structured financial plans that ensure regular income, wealth protection, and peace of mind, so you can enjoy your retirement without depending on others.",
-    bullets: ["Maintain lifestyle lifestyle independence", "Combat inflation & healthcare costs", "Ensure lifelong income sustainability", "Focus on stable, secure returns"]
+    desc: "Retirement Planning offers a personalized retirement strategy designed to help you enjoy financial freedom in your golden years. We establish secure distribution strategies, inflation-hedging models, and cash flow structures to preserve your lifestyle independence.",
+    bullets: ["Maintain lifestyle independence", "Combat inflation & healthcare costs", "Ensure lifelong income sustainability", "Focus on stable, secure returns"]
   },
   {
     title: "Child Education Funding",
-    shortDesc: "Future-ready child education funding plans to cover collegiate and higher academic milestones.",
+    shortDesc: "Build a dedicated corpus to support your child's educational aspirations and future opportunities with confidence.",
     icon: <GraduationCap size={26} style={{ color: "var(--accent-green)", filter: "drop-shadow(0 0 8px var(--accent-green-glow))", margin: 0 }} />,
-    desc: "Child Education Funding helps you plan and secure your child’s academic future without financial stress. We create smart, long-term investment strategies to cover school, college, and higher education expenses, ensuring your child’s dreams are never limited by money.",
+    desc: "Child Education Funding helps you build a dedicated corpus to support your child's educational aspirations and future opportunities with confidence. We map out balanced, multi-stage wealth strategies to address rising academic costs without compromising stability.",
     bullets: ["Combat rising education costs", "Multi-stage academic & career planning", "Reduce debt burden & funding uncertainty", "Balanced growth & capital safety"]
   },
   {
