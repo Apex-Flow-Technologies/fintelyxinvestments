@@ -5,18 +5,17 @@ import { servicesData as services } from "../../data/servicesData";
 export default function ServicesPage({ onNavToCalculators }) {
   return (
     <div className="services-viewport animate-fade-in" style={{ padding: "40px 0" }}>
-      
+
       {/* 1. Page Header */}
       <div className="hub-header">
         <span className="badge-glow-green flex-center">
           <Sparkles size={12} /> Curated Wealth Services
         </span>
         <h2>Our Financial Solutions</h2>
-        <p>Comprehensive distribution models, asset allocations, and wealth planning tools designed to scale and safeguard your capital.</p>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "48px", marginTop: "32px" }}>
-        
+
         {/* 2. Services Grid */}
         <div className="features-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
           {services.map((service, idx) => (
@@ -32,7 +31,7 @@ export default function ServicesPage({ onNavToCalculators }) {
                   {service.desc}
                 </p>
               </div>
-              
+
               <div style={{ marginTop: "20px" }}>
                 <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", color: "var(--accent-cyan)", letterSpacing: "0.05em", display: "block", marginBottom: "8px" }}>
                   Key Highlights
@@ -50,7 +49,7 @@ export default function ServicesPage({ onNavToCalculators }) {
         </div>
 
         {/* 3. Action Banner */}
-        <div className="glass-card flex-center" style={{ 
+        <div className="glass-card flex-center" style={{
           background: "linear-gradient(135deg, rgba(6, 182, 212, 0.04), rgba(16, 185, 129, 0.04))",
           border: "1px solid rgba(6, 182, 212, 0.2)",
           padding: "40px",

@@ -121,8 +121,8 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
     return (
       <div className="about-viewport animate-fade-in" style={{ padding: "40px 0" }}>
         <div className="partner-detail-view">
-          <button 
-            className="partner-detail-back-btn" 
+          <button
+            className="partner-detail-back-btn"
             onClick={() => setSelectedPartner(null)}
           >
             <ArrowLeft size={16} /> Back to LLP Board
@@ -135,9 +135,9 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
                 {selectedPartner.initial}
               </div>
               {selectedPartner.img && (
-                <img 
-                  src={selectedPartner.img} 
-                  alt={selectedPartner.name} 
+                <img
+                  src={selectedPartner.img}
+                  alt={selectedPartner.name}
                   onError={(e) => {
                     e.target.style.display = "none";
                   }}
@@ -215,16 +215,16 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
 
               {/* Action Row */}
               <div className="partner-detail-actions">
-                <a 
-                  href={selectedPartner.whatsapp} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={selectedPartner.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-primary"
                 >
                   <MessageSquare size={16} /> Chat on WhatsApp
                 </a>
-                <button 
-                  className="btn-secondary" 
+                <button
+                  className="btn-secondary"
                   onClick={() => setSelectedPartner(null)}
                 >
                   Back to Board
@@ -239,7 +239,7 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
 
   return (
     <div className="about-viewport animate-fade-in" style={{ padding: "40px 0" }}>
-      
+
       {/* 1. Page Header & Introduction */}
       <div className="hub-header">
         <span className="badge-glow-green flex-center">
@@ -247,17 +247,17 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
         </span>
         <h2>About Fintelyx Investments</h2>
         <p>
-          Fintelyx Investment Services LLP is a premier, technology-enabled mutual fund distribution partnership 
+          Fintelyx Investment Services LLP is a premier, technology-enabled mutual fund distribution partnership
           dedicated to advancing compounding literacy and secure wealth optimization strategies.
         </p>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "56px", marginTop: "40px" }}>
-        
+
         {/* 2. Main Corporate Profile Glass Card */}
         <div className="glass-card" style={{ padding: "40px", textAlign: "left" }}>
           <div className="about-corporate-grid">
-            
+
             {/* Left Col: Mission Statement */}
             <div>
               <span className="badge-glow-green" style={{ marginBottom: "20px", display: "inline-block", textTransform: "uppercase", fontSize: "14px", fontWeight: "800", padding: "6px 16px" }}>WHO WE ARE</span>
@@ -298,33 +298,32 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
         <div className="section-title-wrapper text-center">
           <span className="badge-glow-green"><Users size={12} /> LLP Board</span>
           <h3 style={{ fontSize: "28px", color: "var(--text-primary)", marginTop: "8px" }}>Our Team</h3>
-          <p style={{ color: "var(--text-secondary)" }}>Directing the corporate affairs and distribution standards of Fintelyx. Click on any partner to view their full profile.</p>
         </div>
 
-        <div className="team-cards-grid flex-center" style={{ 
-          display: "grid", 
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+        <div className="team-cards-grid flex-center" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
           gap: "24px",
           width: "100%",
           alignItems: "stretch"
         }}>
           {partners.map((partner) => (
-            <div 
-              key={partner.id} 
+            <div
+              key={partner.id}
               className="team-partner-card"
               onClick={() => setSelectedPartner(partner)}
               style={{ cursor: "pointer" }}
             >
-              
+
               {/* Partner Portrait Image Frame with initials fallback */}
               <div className="partner-portrait-frame flex-center">
                 <div className="portrait-image-fallback flex-center">
                   {partner.initial}
                 </div>
                 {partner.img && (
-                  <img 
-                    src={partner.img} 
-                    alt={partner.name} 
+                  <img
+                    src={partner.img}
+                    alt={partner.name}
                     onError={(e) => {
                       // Hide broken image link to reveal high-fidelity fallback behind it
                       e.target.style.display = "none";
@@ -337,27 +336,27 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
               <div className="partner-text-block">
                 <div className="partner-role-pill">{partner.role}</div>
                 {partner.department && <div className="partner-dept-pill">{partner.department}</div>}
-                
+
                 <h3 className="partner-display-name">{partner.name}</h3>
-                
+
                 <hr className="partner-card-divider" />
-                
+
                 <p className="partner-bio-desc">{partner.desc}</p>
-                
+
                 <div style={{ fontSize: "12px", color: "var(--accent-green)", fontWeight: "600", marginBottom: "20px" }}>
                   View Profile →
                 </div>
-                
+
                 {/* Neon green circular social links */}
                 <div className="partner-social-row flex-center" onClick={(e) => e.stopPropagation()}>
                   <a href="#" className="partner-social-btn flex-center" aria-label="Facebook">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#ffffff"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#ffffff"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" /></svg>
                   </a>
                   <a href="#" className="partner-social-btn flex-center" aria-label="Instagram">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                   </a>
                   <a href="#" className="partner-social-btn flex-center" aria-label="Twitter">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#ffffff"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#ffffff"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" /></svg>
                   </a>
                 </div>
               </div>
@@ -367,17 +366,17 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
         </div>
 
         {/* 4. Statutory Regulatory Panel */}
-        <div className="glass-card flex-center" style={{ 
-          background: "rgba(245, 158, 11, 0.03)", 
-          border: "1px dashed rgba(245, 158, 11, 0.3)", 
+        <div className="glass-card flex-center" style={{
+          background: "rgba(245, 158, 11, 0.03)",
+          border: "1px dashed rgba(245, 158, 11, 0.3)",
           padding: "clamp(20px, 4vw, 40px)",
           gap: "24px",
           marginTop: "20px",
           flexWrap: "wrap"
         }}>
-          <div className="badge-stamp-icon flex-center" style={{ 
-            background: "rgba(245, 158, 11, 0.08)", 
-            border: "1px solid rgba(245, 158, 11, 0.2)", 
+          <div className="badge-stamp-icon flex-center" style={{
+            background: "rgba(245, 158, 11, 0.08)",
+            border: "1px solid rgba(245, 158, 11, 0.2)",
             color: "#fbbf24",
             width: "60px",
             height: "60px",
@@ -389,21 +388,21 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
           <div style={{ textDecoration: "none", textAlign: "left" }}>
             <h4 style={{ color: "#fbbf24", fontSize: "16px", fontWeight: "700" }}>Statutory Disclosure & Disclaimer</h4>
             <p style={{ fontSize: "12px", color: "var(--text-secondary)", lineHeight: "1.6", marginTop: "6px" }}>
-              Fintelyx Investment Services LLP operates strictly as a mutual fund distributor. In accordance with the 
+              Fintelyx Investment Services LLP operates strictly as a mutual fund distributor. In accordance with the
               guidelines laid down by the Securities and Exchange Board of India (SEBI) and the Association of Mutual Funds in India (AMFI):
             </p>
             <ul style={{ fontSize: "11px", color: "var(--text-muted)", listStyle: "circle", paddingLeft: "16px", marginTop: "10px", display: "flex", flexDirection: "column", gap: "6px" }}>
               <li>
-                We are <strong>not SEBI-registered research analysts</strong> or registered investment advisers. The tools, graphs, 
-                CAGRs, and portfolio allocations (e.g. SIP calculations or backtest curves) displayed on this platform are 
+                We are <strong>not SEBI-registered research analysts</strong> or registered investment advisers. The tools, graphs,
+                CAGRs, and portfolio allocations (e.g. SIP calculations or backtest curves) displayed on this platform are
                 purely for educational projection and simulation purposes.
               </li>
               <li>
-                Mutual fund investments are subject to market risks. We distribute schemes from various AMCs but do not 
+                Mutual fund investments are subject to market risks. We distribute schemes from various AMCs but do not
                 guarantee any specific financial outcomes or compound interest growth yields.
               </li>
               <li>
-                All calculation profiles are hypothetical. Clients are requested to verify mutual fund prospectus files 
+                All calculation profiles are hypothetical. Clients are requested to verify mutual fund prospectus files
                 and consult certified financial planners before executing real financial investments.
               </li>
             </ul>
