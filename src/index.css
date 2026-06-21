@@ -27,6 +27,7 @@
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
+  --nav-inactive-color: #cbd5e1;
   
   /* Glassmorphism Styles */
   --glass-bg: rgba(15, 19, 26, 0.65);
@@ -82,6 +83,7 @@
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
+  --nav-inactive-color: #334155;
   
   /* Glassmorphism Styles */
   --glass-bg: rgba(255, 255, 255, 0.82);

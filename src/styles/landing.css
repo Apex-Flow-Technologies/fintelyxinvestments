@@ -170,12 +170,12 @@
   color: var(--text-primary);
 }
 
-.ticker-up {
-  color: var(--accent-green);
+.ticker-item .ticker-up {
+  color: #10b981;
   font-weight: 700;
 }
 
-.ticker-down {
+.ticker-item .ticker-down {
   color: #ef4444;
   font-weight: 700;
 }
