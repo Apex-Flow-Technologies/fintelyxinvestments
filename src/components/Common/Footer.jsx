@@ -105,10 +105,10 @@ export default function Footer({ onTabChange, theme }) {
             <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "12px" }}>
               <ShieldCheck size={16} style={{ color: "var(--accent-green)", flexShrink: 0, marginTop: "2px" }} />
               <div style={{ lineHeight: "1.6" }}>
-                <strong>AMFI Registered Distributor</strong><br />
-                ARN-345579<br />
+                <strong>AMFI Registration</strong><br />
+                <strong style={{ color: "var(--text-primary)" }}>ARN-345579</strong><br />
                 <span style={{ color: "var(--text-muted)", fontSize: "11px" }}>
-                  Registered: 14-NOV-2025<br />
+                  Initial Date of Registration: 14-NOV-2025<br />
                   Valid through: 13-NOV-2028
                 </span>
               </div>
@@ -129,6 +129,9 @@ export default function Footer({ onTabChange, theme }) {
           flexDirection: "column",
           gap: "12px"
         }}>
+          <p style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: "500", marginBottom: "4px" }}>
+            Fintelyx Investment Services LLP is an AMFI Registered distributor of mutual funds (ARN-345579). Initial date of registration: 14-NOV-2025, Valid through: 13-NOV-2028
+          </p>
           <p>
             <strong>MUTUAL FUND INVESTMENT DISCLOSURE:</strong> Mutual Fund investments are subject to market risks, read all scheme related documents carefully before investing. Past performance is not indicative of future performance.
           </p>

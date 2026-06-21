@@ -274,8 +274,12 @@ export default function AboutPage({ partnerId, onPartnerChange }) {
                   <Award size={20} />
                 </div>
                 <div>
-                  <h4 style={{ fontSize: "14px", color: "var(--text-primary)" }}>AMFI Registered License</h4>
-                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>ARN-345579 distributor credentials</span>
+                  <h4 style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: "700" }}>AMFI Registration</h4>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)", display: "flex", flexDirection: "column", gap: "2px", marginTop: "4px" }}>
+                    <strong style={{ color: "var(--text-primary)" }}>ARN-345579</strong>
+                    <span>Initial Date of Registration: 14-NOV-2025</span>
+                    <span>Valid through: 13-NOV-2028</span>
+                  </div>
                 </div>
               </div>
 
