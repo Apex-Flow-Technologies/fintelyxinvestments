@@ -523,33 +523,65 @@ export default function LandingPage({ theme }) {
       </section>
 
       {/* 2. CURRENCY / STOCK TICKERS BAR */}
-      <section className="market-ticker-banner">
+      <section className="market-ticker-banner" style={{ padding: "16px 0 8px" }}>
         <div className="ticker-track">
-          <div className="ticker-item flex-center">
-            <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
+          {/* Group 1 */}
+          <div className="ticker-group">
+            <div className="ticker-item flex-center">
+              <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
+            </div>
           </div>
-          <div className="ticker-item flex-center">
-            <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
+          {/* Group 2 (Duplicate for infinite seamless loop) */}
+          <div className="ticker-group">
+            <div className="ticker-item flex-center">
+              <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
+            </div>
+            <div className="ticker-item flex-center">
+              <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
+            </div>
           </div>
-          <div className="ticker-item flex-center">
-            <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
-          </div>
-          <div className="ticker-item flex-center">
-            <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
-          </div>
-          {/* Double content for infinite loop effect */}
-          <div className="ticker-item flex-center">
-            <span>NSE NIFTY 50</span> <strong>23,260.50</strong> <span className="ticker-up">+0.85%</span>
-          </div>
-          <div className="ticker-item flex-center">
-            <span>BSE SENSEX</span> <strong>76,450.10</strong> <span className="ticker-up">+0.78%</span>
-          </div>
-          <div className="ticker-item flex-center">
-            <span>GOLD (24K / 10g)</span> <strong>₹72,450</strong> <span className="ticker-down">-0.25%</span>
-          </div>
-          <div className="ticker-item flex-center">
-            <span>USD / INR</span> <strong>₹83.52</strong> <span className="ticker-up">+0.12%</span>
-          </div>
+        </div>
+        <div style={{ fontSize: "9px", color: "var(--text-muted)", textAlign: "center", marginTop: "8px", letterSpacing: "0.02em", opacity: 0.6 }}>
+          *Indicative market indices for demonstration purposes only, not real-time feeds.
         </div>
       </section>
 
